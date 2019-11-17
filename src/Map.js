@@ -6,7 +6,7 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import settings from './settings';
 import theme from './theme';
 
-const Map = () => {
+const Map = ({ children, ...props }) => {
   const containerRef = useRef(null);
   useEffect(() => {
     const container = containerRef.current;
@@ -22,7 +22,9 @@ const Map = () => {
   return (
     <>
       <GlobalMapStyle />
-      <MapContainer ref={containerRef} />
+      <MapContainer ref={containerRef} {...props}>
+        {children}
+      </MapContainer>
     </>
   );
 };
