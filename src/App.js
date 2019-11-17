@@ -3,12 +3,23 @@ import styled from 'styled-components';
 
 import ErrorBoundary from './ErrorBoundary';
 import Map from './Map';
+import { Person, useGetPeople } from './People';
 
 const App = () => {
+  const people = useGetPeople();
   return (
     <AppContainer>
       <ErrorBoundary>
-        <Map />
+        <Map>
+          {people.map((person, index) => (
+            <Map.Marker
+              key={index}
+              lngLat={[person.longitude, person.latitude]}
+            >
+              <Person key={index} person={person} />
+            </Map.Marker>
+          ))}
+        </Map>
       </ErrorBoundary>
     </AppContainer>
   );

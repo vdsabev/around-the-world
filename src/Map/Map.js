@@ -1,29 +1,33 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 
-import settings from './settings';
-import theme from './theme';
+import settings from '../settings';
+import theme from '../theme';
+import MapContext from './MapContext';
 
 const Map = ({ children, ...props }) => {
+  const [map, setMap] = useState(null);
   const containerRef = useRef(null);
   useEffect(() => {
     const container = containerRef.current;
-    if (container) {
+    if (container && !map) {
       mapboxgl.accessToken = settings.mapbox.accessToken;
 
       const map = new mapboxgl.Map({ ...settings.mapbox.options, container });
       map.addControl(new mapboxgl.NavigationControl({ showCompass: false }));
       map.fitBounds(settings.mapbox.bounds);
+
+      setMap(map);
     }
-  }, []);
+  }, [map]);
 
   return (
     <>
       <GlobalMapStyle />
       <MapContainer ref={containerRef} {...props}>
-        {children}
+        <MapContext.Provider value={map}>{children}</MapContext.Provider>
       </MapContainer>
     </>
   );
