@@ -12,7 +12,7 @@ const PersonAvatar = styled.button`
   height: ${settings.person.size}px;
 
   border-radius: 50%;
-  border: ${settings.person.border}px solid ${theme.neutral.main};
+  border: 2px solid ${theme.neutral.main};
 
   background-color: ${theme.neutral.main};
   background-image: url('${({ person }) => getPictureUrl(person.pictureUrl)}');

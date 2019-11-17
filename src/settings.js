@@ -11,7 +11,6 @@ const settings = {
   },
 
   person: {
-    border: 2, // in px
     size: 64, // in px
   },
 };
