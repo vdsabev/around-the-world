@@ -30,7 +30,7 @@ const App = () => {
           {selectedPerson && (
             <Map.Popup
               lngLat={[selectedPerson.longitude, selectedPerson.latitude]}
-              offset={2 + settings.person.size / 2}
+              offset={settings.person.border + settings.person.size / 2}
             >
               <h2>{selectedPerson.name}</h2>
               <p>{selectedPerson.about}</p>
