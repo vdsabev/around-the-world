@@ -15,6 +15,7 @@ const Map = () => {
 
       const map = new mapboxgl.Map({ ...settings.mapbox.options, container });
       map.addControl(new mapboxgl.NavigationControl({ showCompass: false }));
+      map.fitBounds(settings.mapbox.bounds);
     }
   }, []);
 
