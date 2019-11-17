@@ -28,5 +28,5 @@ const useMapboxMarker = (container, map, lngLat, options) => {
     return () => {
       marker.remove();
     };
-  }, [container, map, lngLat]);
+  }, [container, map, lngLat]); // eslint-disable-line react-hooks/exhaustive-deps
 };

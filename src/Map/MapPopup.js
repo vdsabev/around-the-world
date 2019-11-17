@@ -30,5 +30,5 @@ const useMapboxPopup = (container, map, lngLat, options) => {
     return () => {
       popup.remove();
     };
-  }, [container, map, lngLat]);
+  }, [container, map, lngLat]); // eslint-disable-line react-hooks/exhaustive-deps
 };
