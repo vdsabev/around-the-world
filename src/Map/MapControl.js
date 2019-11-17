@@ -4,17 +4,17 @@ import ReactDOM from 'react-dom';
 import MapContext from './MapContext';
 
 const MapControl = ({ children, className, position, ...props }) => {
-  const container = useMapboxControl({ className, position });
+  const container = useMapboxControl(className, position);
   return ReactDOM.createPortal(children, container);
 };
 
 export default MapControl;
 
-const useMapboxControl = ({
+const useMapboxControl = (
   className,
   position,
-  mapboxClassName = 'mapboxgl-ctrl',
-}) => {
+  mapboxClassName = 'mapboxgl-ctrl'
+) => {
   const map = useContext(MapContext);
   const container = useMemo(() => document.createElement('div'), []);
 

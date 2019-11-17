@@ -4,7 +4,7 @@ import settings from '../settings';
 import theme from '../theme';
 import userUrl from './user.svg';
 
-const Person = styled.button`
+const PersonAvatar = styled.button`
   cursor: pointer;
   outline: 0;
   overflow: hidden;
@@ -12,7 +12,7 @@ const Person = styled.button`
   height: ${settings.person.size}px;
 
   border-radius: 50%;
-  border: ${settings.person.border}px solid ${theme.primary.main};
+  border: ${settings.person.border}px solid ${theme.neutral.main};
 
   background-color: ${theme.neutral.main};
   background-image: url('${({ person }) => getPictureUrl(person.pictureUrl)}');
@@ -30,9 +30,9 @@ const Person = styled.button`
   }
 `;
 
+export default PersonAvatar;
+
 const getPictureUrl = (url) =>
   url
     ? `${url.replace('/open?', '/thumbnail?')}&sz=w${settings.person.size}`
     : userUrl;
-
-export default Person;

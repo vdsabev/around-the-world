@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import ErrorBoundary from './ErrorBoundary';
 import Map from './Map';
-import { Person, useGetPeople } from './People';
+import Person, { useGetPeople } from './People';
 import settings from './settings';
 
 const App = () => {
@@ -18,7 +18,7 @@ const App = () => {
               key={index}
               lngLat={[person.longitude, person.latitude]}
             >
-              <Person
+              <Person.Avatar
                 key={index}
                 person={person}
                 onMouseEnter={() => setSelectedPerson(person)}
@@ -32,8 +32,7 @@ const App = () => {
               lngLat={[selectedPerson.longitude, selectedPerson.latitude]}
               offset={settings.person.border + settings.person.size / 2}
             >
-              <h2>{selectedPerson.name}</h2>
-              <p>{selectedPerson.about}</p>
+              <Person.Info person={selectedPerson} />
             </Map.Popup>
           )}
         </Map>

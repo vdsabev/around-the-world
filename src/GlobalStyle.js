@@ -32,6 +32,17 @@ const GlobalStyle = createGlobalStyle`
     -moz-osx-font-smoothing: grayscale;
   }
 
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p {
+    margin-block-start: 0;
+    margin-block-end: 0;
+  }
+
   a {
     display: inline-block;
     color: inherit;

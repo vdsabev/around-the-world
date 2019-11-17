@@ -11,23 +11,23 @@ const theme = {
   },
   primary: {
     main: '#2d3436',
-    contrast: 'white',
+    contrast: '#ffffff',
   },
   success: {
     main: '#c3db35',
-    contrast: 'white',
+    contrast: '#ffffff',
   },
   warning: {
     main: '#ffa71a',
-    contrast: 'white',
+    contrast: '#ffffff',
   },
   danger: {
     main: '#eb402d',
-    contrast: 'white',
+    contrast: '#ffffff',
   },
   info: {
     main: '#27b9dd',
-    contrast: 'white',
+    contrast: '#ffffff',
   },
 
   // Spacing
