@@ -1,12 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
 import ErrorBoundary from './ErrorBoundary';
 import Map from './Map';
 import { Person, useGetPeople } from './People';
+import settings from './settings';
 
 const App = () => {
   const people = useGetPeople();
+  const [selectedPerson, setSelectedPerson] = useState(null);
   return (
     <AppContainer>
       <ErrorBoundary>
@@ -16,14 +18,24 @@ const App = () => {
               key={index}
               lngLat={[person.longitude, person.latitude]}
             >
-              <Person key={index} person={person} />
-
-              <Map.Popup offset={34}>
-                <h2>{person.name}</h2>
-                <p>{person.about}</p>
-              </Map.Popup>
+              <Person
+                key={index}
+                person={person}
+                onMouseEnter={() => setSelectedPerson(person)}
+                onMouseLeave={() => setSelectedPerson(null)}
+              />
             </Map.Marker>
           ))}
+
+          {selectedPerson && (
+            <Map.Popup
+              lngLat={[selectedPerson.longitude, selectedPerson.latitude]}
+              offset={2 + settings.person.size / 2}
+            >
+              <h2>{selectedPerson.name}</h2>
+              <p>{selectedPerson.about}</p>
+            </Map.Popup>
+          )}
         </Map>
       </ErrorBoundary>
     </AppContainer>

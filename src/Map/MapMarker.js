@@ -1,41 +1,32 @@
-import React, { useContext, useEffect, useMemo, useState } from 'react';
+import { useContext, useEffect, useMemo } from 'react';
 import mapboxgl from 'mapbox-gl';
 import ReactDOM from 'react-dom';
 
 import MapContext from './MapContext';
-import MarkerContext from './MarkerContext';
 
-const MapMarker = ({ children, lngLat }) => {
+const MapMarker = ({ children, lngLat, ...props }) => {
   const container = useMemo(() => document.createElement('div'), []);
   const map = useContext(MapContext);
-  const marker = useMapboxMarker(container, map, lngLat);
+  useMapboxMarker(container, map, lngLat, props);
 
-  return ReactDOM.createPortal(
-    <MarkerContext.Provider value={marker}>{children}</MarkerContext.Provider>,
-    container
-  );
+  return ReactDOM.createPortal(children, container);
 };
 
 export default MapMarker;
 
-const useMapboxMarker = (container, map, lngLat) => {
-  const [marker, setMarker] = useState(null);
-
+const useMapboxMarker = (container, map, lngLat, options) => {
   useEffect(() => {
     if (!map) return;
 
     const marker = new mapboxgl.Marker(container, {
       anchor: 'center',
+      ...options,
     })
       .setLngLat(lngLat)
       .addTo(map);
-
-    setMarker(marker);
 
     return () => {
       marker.remove();
     };
   }, [container, map, lngLat]);
-
-  return marker;
 };

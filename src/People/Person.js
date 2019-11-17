@@ -12,7 +12,7 @@ const Person = styled.button`
   height: ${settings.person.size}px;
 
   border-radius: 50%;
-  border: 2px solid ${theme.primary.main};
+  border: ${settings.person.border}px solid ${theme.primary.main};
 
   background-color: ${theme.neutral.main};
   background-image: url('${({ person }) => getPictureUrl(person.pictureUrl)}');
