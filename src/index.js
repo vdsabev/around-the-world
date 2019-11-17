@@ -10,7 +10,7 @@ ReactDOM.render(
     <GlobalStyle />
     <App />
   </>,
-  document.getElementById('root')
+  document.querySelector('main')
 );
 
 // If you want your app to work offline and load faster, you can change
