@@ -1,19 +1,15 @@
 import styled from 'styled-components';
 
+import settings from '../settings';
 import theme from '../theme';
 import userUrl from './user.svg';
-
-const picture = {
-  size: 64, // in px
-  scale: 1.25, // multiplier
-};
 
 const Person = styled.button`
   cursor: pointer;
   outline: 0;
   overflow: hidden;
-  width: ${picture.size}px;
-  height: ${picture.size}px;
+  width: ${settings.person.size}px;
+  height: ${settings.person.size}px;
 
   border-radius: 50%;
   border: 2px solid ${theme.primary.main};
@@ -26,18 +22,17 @@ const Person = styled.button`
 
   padding: 0;
 
-  transition: ${theme.durations.short}ms ${theme.transitions.easeInOut};
-  transition-property: filter, transform;
+  filter: grayscale(100%) brightness(120%);
+  transition: filter ${theme.durations.short}ms ${theme.transitions.easeInOut};
 
   &:hover {
-    transform: scale(${picture.scale});
+    filter: grayscale(0);
   }
 `;
 
 const getPictureUrl = (url) =>
   url
-    ? `${url.replace('/open?', '/thumbnail?')}&sz=w${picture.size *
-        picture.scale}`
+    ? `${url.replace('/open?', '/thumbnail?')}&sz=w${settings.person.size}`
     : userUrl;
 
 export default Person;

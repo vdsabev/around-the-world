@@ -9,6 +9,10 @@ const settings = {
       [180, 70],
     ],
   },
+
+  person: {
+    size: 64, // in px
+  },
 };
 
 export default settings;

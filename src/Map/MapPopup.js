@@ -2,32 +2,29 @@ import { useContext, useEffect, useMemo } from 'react';
 import mapboxgl from 'mapbox-gl';
 import ReactDOM from 'react-dom';
 
-import MapContext from './MapContext';
+import MarkerContext from './MarkerContext';
 
-const MapPopup = ({ children, lngLat }) => {
+const MapPopup = ({ children, lngLat, ...props }) => {
   const container = useMemo(() => document.createElement('div'), []);
-  const map = useContext(MapContext);
-  useMapboxPopup(container, map, lngLat);
+  const map = useContext(MarkerContext);
+  const marker = useContext(MarkerContext);
+  useMapboxPopup(container, { map, marker, lngLat, options: props });
 
   return ReactDOM.createPortal(children, container);
 };
 
 export default MapPopup;
 
-const useMapboxPopup = (container, map, lngLat) => {
+const useMapboxPopup = (container, { map, marker, lngLat, options }) => {
   useEffect(() => {
-    if (!map) return;
-
-    const popup = new mapboxgl.Popup({
-      closeButton: false,
-      closeOnClick: false,
-    })
-      .setDOMContent(container)
-      .setLngLat(lngLat)
-      .addTo(map);
-
-    return () => {
-      popup.remove();
-    };
-  }, [container, map, lngLat]);
+    const popup = new mapboxgl.Popup(options).setDOMContent(container);
+    if (marker) {
+      marker.setPopup(popup);
+    } else if (map && lngLat) {
+      popup.setLngLat(lngLat).addTo(map);
+      return () => {
+        popup.remove();
+      };
+    }
+  }, [container, map, marker, lngLat]);
 };

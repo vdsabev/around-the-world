@@ -17,6 +17,11 @@ const App = () => {
               lngLat={[person.longitude, person.latitude]}
             >
               <Person key={index} person={person} />
+
+              <Map.Popup offset={34}>
+                <h2>{person.name}</h2>
+                <p>{person.about}</p>
+              </Map.Popup>
             </Map.Marker>
           ))}
         </Map>
