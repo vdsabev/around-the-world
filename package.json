@@ -2,6 +2,14 @@
   "name": "around-the-world",
   "version": "0.1.0",
   "private": true,
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "npm run build:favicon && npm run build:logo && react-scripts build",
+    "build:favicon": "icon-gen -i src/logo.svg -o public -r --favicon name=favicon ico=16,24,32,64 sizes=",
+    "build:logo": "icon-gen -i src/logo.svg -o public -r --favicon name=logo ico= sizes=192,512",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
   "dependencies": {
     "mapbox-gl": "1.5.0",
     "react": "^16.12.0",
@@ -10,11 +18,9 @@
     "styled-components": "4.4.1",
     "tabletop": "1.6.2"
   },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+  "devDependencies": {
+    "@types/jest": "24.0.23",
+    "icon-gen": "2.0.0"
   },
   "eslintConfig": {
     "extends": "react-app",
