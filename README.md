@@ -11,7 +11,8 @@
 2. Publish spreadsheet to the web following the instructions here: https://github.com/jsoma/tabletop#like-how-easy
 3. Set up required environment variables by creating a `.env` file locally or configuring the settings in your hosting provider:
 ```
-REACT_APP_GOOGLE_SPREADSHEET_COLUMNS={"What's your name?":"name","Where are you located?":"location","Latitude":"latitude","Longitude":"longitude","Would you like to upload a picture of yourself?":"pictureUrl","Anything you want to share with us about yourself?":"about"}
+REACT_APP_GOOGLE_SPREADSHEET_COLUMNS={"What's your name?":"name","Job title?":"title","Where are you located?":"location","Latitude":"latitude","Longitude":"longitude","Would you like to upload a picture of yourself?":"pictureUrl","Anything you want to share with us about yourself?":"about"}
+REACT_APP_INFO_COLUMNS=[{"field":"name","label":"Name","symbol":"👋"},{"field":"title","label":"Title","symbol":"💼"},{"field":"location","label":"Location","symbol":"🏡"},{"field":"about","label":"About","symbol":"💭"}]
 REACT_APP_GOOGLE_SPREADSHEET_URL=https://docs.google.com/spreadsheets/d/YOUR_SPREADSHEET_URL_HERE/edit?usp=sharing
 REACT_APP_MAPBOX_ACCESS_TOKEN=YOUR_MAPBOX_ACCESS_TOKEN_HERE
 REACT_APP_MAPBOX_STYLE_URL=YOUR_MAPBOX_STYLE_URL_HERE

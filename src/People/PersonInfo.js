@@ -3,29 +3,17 @@ import styled from 'styled-components';
 
 import BaseEmoji from '../Emoji';
 
+const infoColumns = JSON.parse(process.env.REACT_APP_INFO_COLUMNS);
+
 const PersonInfo = ({ person }) => {
-  return (
-    <>
-      <p>
-        <Emoji label="Name" symbol="👋" />
-        <b>{person.name}</b>
+  return infoColumns
+    .filter((column) => person[column.field])
+    .map((column) => (
+      <p key={column.field}>
+        <Emoji label={column.label} symbol={column.symbol} />
+        {person[column.field]}
       </p>
-
-      {person.location && (
-        <p>
-          <Emoji label="Location" symbol="🏡" />
-          <b>{person.location}</b>
-        </p>
-      )}
-
-      {person.about && (
-        <p>
-          <Emoji label="About" symbol="💭" />
-          {person.about}
-        </p>
-      )}
-    </>
-  );
+    ));
 };
 
 export default PersonInfo;
