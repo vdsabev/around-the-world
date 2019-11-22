@@ -1,26 +1,45 @@
-import { useContext, useEffect, useMemo } from 'react';
+import { useContext, useEffect } from 'react';
 import mapboxgl from 'mapbox-gl';
 import ReactDOM from 'react-dom';
 
+import { useElement } from './hooks';
 import MapContext from './MapContext';
 
-const MapMarker = ({ children, lngLat, ...props }) => {
-  const container = useMemo(() => document.createElement('div'), []);
+const MapMarker = ({
+  // Required
+  children,
+  lngLat,
+  // Marker options: https://docs.mapbox.com/mapbox-gl-js/api/#marker
+  anchor,
+  color,
+  draggable,
+  offset,
+  // Misc
+  tagName = 'div',
+  ...props
+}) => {
+  const element = useElement(tagName, props);
   const map = useContext(MapContext);
-  useMapboxMarker(container, map, lngLat, props);
+  useMapboxMarker(map, element, lngLat, {
+    anchor,
+    color,
+    draggable,
+    offset,
+  });
 
-  return ReactDOM.createPortal(children, container);
+  return ReactDOM.createPortal(children, element);
 };
 
 export default MapMarker;
 
-const useMapboxMarker = (container, map, lngLat, options) => {
+const useMapboxMarker = (map, element, lngLat, options) => {
   useEffect(() => {
     if (!map) return;
 
-    const marker = new mapboxgl.Marker(container, {
+    const marker = new mapboxgl.Marker({
       anchor: 'center',
       ...options,
+      element,
     })
       .setLngLat(lngLat)
       .addTo(map);
@@ -28,5 +47,5 @@ const useMapboxMarker = (container, map, lngLat, options) => {
     return () => {
       marker.remove();
     };
-  }, [container, map, lngLat]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [map, element, lngLat]); // eslint-disable-line react-hooks/exhaustive-deps
 };

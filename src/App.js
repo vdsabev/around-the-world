@@ -20,7 +20,11 @@ const App = () => {
     <AppContainer>
       <Map bounds={bounds}>
         {people.map((person, index) => (
-          <Map.Marker key={index} lngLat={person.lngLat}>
+          <Map.Marker
+            key={index}
+            lngLat={person.lngLat}
+            style={{ zIndex: person === selectedPerson ? 1 : 'initial' }}
+          >
             <PersonAvatar
               person={person}
               onMouseEnter={() => setSelectedPerson(person)}

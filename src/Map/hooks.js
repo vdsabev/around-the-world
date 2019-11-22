@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useEffect } from 'react';
 import mapboxgl from 'mapbox-gl';
 
 export const useBounds = (coordinates, minCoordinates = 2) => {
@@ -11,4 +11,19 @@ export const useBounds = (coordinates, minCoordinates = 2) => {
   }, [coordinates, minCoordinates]);
 
   return bounds;
+};
+
+export const useElement = (tagName, props) => {
+  const element = useMemo(() => document.createElement(tagName), [tagName]);
+  useEffect(() => {
+    Object.keys(props).forEach((key) => {
+      if (key === 'style') {
+        Object.assign(element.style, props.style);
+      } else {
+        element[key] = props[key];
+      }
+    });
+  }, [element, props]);
+
+  return element;
 };

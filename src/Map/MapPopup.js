@@ -1,20 +1,42 @@
-import { useContext, useEffect, useMemo } from 'react';
+import { useContext, useEffect } from 'react';
 import mapboxgl from 'mapbox-gl';
 import ReactDOM from 'react-dom';
 
+import { useElement } from './hooks';
 import MapContext from './MapContext';
 
-const MapPopup = ({ children, lngLat, ...props }) => {
-  const container = useMemo(() => document.createElement('div'), []);
+const MapPopup = ({
+  // Required
+  children,
+  lngLat,
+  // Popup options: https://docs.mapbox.com/mapbox-gl-js/api/#popup
+  closeButton,
+  closeOnClick,
+  anchor,
+  offset,
+  className,
+  maxWidth,
+  // Misc
+  tagName = 'div',
+  ...props
+}) => {
+  const element = useElement(tagName, props);
   const map = useContext(MapContext);
-  useMapboxPopup(container, map, lngLat, props);
+  useMapboxPopup(map, element, lngLat, {
+    closeButton,
+    closeOnClick,
+    anchor,
+    offset,
+    className,
+    maxWidth,
+  });
 
-  return ReactDOM.createPortal(children, container);
+  return ReactDOM.createPortal(children, element);
 };
 
 export default MapPopup;
 
-const useMapboxPopup = (container, map, lngLat, options) => {
+const useMapboxPopup = (map, element, lngLat, options) => {
   useEffect(() => {
     if (!map) return;
 
@@ -23,12 +45,12 @@ const useMapboxPopup = (container, map, lngLat, options) => {
       closeOnClick: false,
       ...options,
     })
-      .setDOMContent(container)
+      .setDOMContent(element)
       .setLngLat(lngLat)
       .addTo(map);
 
     return () => {
       popup.remove();
     };
-  }, [container, map, lngLat]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [map, element, lngLat]); // eslint-disable-line react-hooks/exhaustive-deps
 };
