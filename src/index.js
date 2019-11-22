@@ -2,14 +2,15 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import App from './App';
+import ErrorBoundary from './ErrorBoundary';
 import GlobalStyle from './GlobalStyle';
 import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(
-  <>
+  <ErrorBoundary>
     <GlobalStyle />
     <App />
-  </>,
+  </ErrorBoundary>,
   document.querySelector('main')
 );
 

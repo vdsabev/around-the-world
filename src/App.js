@@ -1,42 +1,41 @@
-import React, { useState } from 'react';
+import React, { useContext, useMemo, useState } from 'react';
 import styled from 'styled-components';
 
-import ErrorBoundary from './ErrorBoundary';
-import Map from './Map';
+import Map, { useBounds } from './Map';
 import Person, { useGetPeople } from './People';
 import settings from './settings';
 
 const App = () => {
   const people = useGetPeople();
+  const coordinates = useMemo(() => people.map((person) => person.lngLat), [
+    people,
+  ]);
+  const bounds = useBounds(coordinates);
   const [selectedPerson, setSelectedPerson] = useState(null);
+
   return (
     <AppContainer>
-      <ErrorBoundary>
-        <Map>
-          {people.map((person, index) => (
-            <Map.Marker
-              key={index}
-              lngLat={[person.longitude, person.latitude]}
-            >
-              <Person.Avatar
-                key={index}
-                person={person}
-                onMouseEnter={() => setSelectedPerson(person)}
-                onMouseLeave={() => setSelectedPerson(null)}
-              />
-            </Map.Marker>
-          ))}
+      <Map bounds={bounds}>
+        {people.map((person, index) => (
+          <Map.Marker key={index} lngLat={person.lngLat}>
+            <PersonAvatar
+              person={person}
+              onMouseEnter={() => setSelectedPerson(person)}
+              onMouseLeave={() => setSelectedPerson(null)}
+              onClick={() => setSelectedPerson(person)}
+            />
+          </Map.Marker>
+        ))}
 
-          {selectedPerson && (
-            <Map.Popup
-              lngLat={[selectedPerson.longitude, selectedPerson.latitude]}
-              offset={settings.person.size / 2}
-            >
-              <Person.Info person={selectedPerson} />
-            </Map.Popup>
-          )}
-        </Map>
-      </ErrorBoundary>
+        {selectedPerson && (
+          <Map.Popup
+            lngLat={selectedPerson.lngLat}
+            offset={settings.person.size / 2}
+          >
+            <Person.Info person={selectedPerson} />
+          </Map.Popup>
+        )}
+      </Map>
     </AppContainer>
   );
 };
@@ -49,3 +48,17 @@ const AppContainer = styled.div`
   justify-content: center;
   align-items: center;
 `;
+
+// NOTE: We need this as a separate component to access the map context
+const PersonAvatar = ({ onClick, ...props }) => {
+  const map = useContext(Map.Context);
+  return (
+    <Person.Avatar
+      onClick={(e) => {
+        onClick(e);
+        map.flyTo({ center: props.person.lngLat, zoom: 6, speed: 2 });
+      }}
+      {...props}
+    />
+  );
+};

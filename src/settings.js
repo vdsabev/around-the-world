@@ -3,11 +3,11 @@ const settings = {
     accessToken: process.env.REACT_APP_MAPBOX_ACCESS_TOKEN,
     options: {
       style: process.env.REACT_APP_MAPBOX_STYLE_URL,
+      bounds: [
+        [-180, -50],
+        [180, 70],
+      ],
     },
-    bounds: [
-      [-180, -30],
-      [180, 70],
-    ],
   },
 
   person: {

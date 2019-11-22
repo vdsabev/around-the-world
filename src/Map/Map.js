@@ -7,7 +7,7 @@ import settings from '../settings';
 import theme from '../theme';
 import MapContext from './MapContext';
 
-const Map = ({ children, ...props }) => {
+const Map = ({ bounds, children, ...props }) => {
   const [map, setMap] = useState(null);
   const containerRef = useRef(null);
   useEffect(() => {
@@ -17,11 +17,16 @@ const Map = ({ children, ...props }) => {
 
       const map = new mapboxgl.Map({ ...settings.mapbox.options, container });
       map.addControl(new mapboxgl.NavigationControl({ showCompass: false }));
-      map.fitBounds(settings.mapbox.bounds);
 
       setMap(map);
     }
   }, [map]);
+
+  useEffect(() => {
+    if (map && bounds) {
+      map.fitBounds(bounds, { padding: 64 });
+    }
+  }, [map, bounds]);
 
   return (
     <>
@@ -40,7 +45,7 @@ const MapContainer = styled.div`
   height: 100%;
 `;
 
-export const GlobalMapStyle = createGlobalStyle`
+const GlobalMapStyle = createGlobalStyle`
   .mapboxgl-control-container {
     .mapboxgl-ctrl-top-left,
     .mapboxgl-ctrl-top-right,
