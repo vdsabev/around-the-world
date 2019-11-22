@@ -1,4 +1,5 @@
 import tabletop from 'tabletop';
+import { toObjectWithLngLat, toObjectWithRenamedKeys } from './utils';
 
 const spreadsheetUrl = process.env.REACT_APP_GOOGLE_SPREADSHEET_URL;
 const spreadsheetColumns = JSON.parse(
@@ -13,15 +14,9 @@ const services = {
       parseNumbers: true,
     });
 
-    const people = data.map((row) =>
-      Object.keys(spreadsheetColumns).reduce((mappedRow, originalColumn) => {
-        const renamedColumn = spreadsheetColumns[originalColumn];
-        return {
-          ...mappedRow,
-          [renamedColumn]: row[originalColumn],
-        };
-      }, {})
-    );
+    const people = data
+      .map(toObjectWithRenamedKeys(spreadsheetColumns))
+      .map(toObjectWithLngLat);
 
     return people;
   },

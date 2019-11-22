@@ -1,12 +1,15 @@
 import React, { useContext, useMemo, useState } from 'react';
 import styled from 'styled-components';
 
-import Map, { useBounds } from './Map';
-import Person, { useGetPeople } from './People';
+import { usePromise } from './hooks';
+import services from './services';
 import settings from './settings';
 
+import Map, { useBounds } from './Map';
+import Person from './People';
+
 const App = () => {
-  const people = useGetPeople();
+  const people = usePromise(services.getPeople, []);
   const coordinates = useMemo(() => people.map((person) => person.lngLat), [
     people,
   ]);
