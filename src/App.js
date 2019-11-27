@@ -26,6 +26,7 @@ const App = () => {
             style={{ zIndex: person === selectedPerson ? 1 : 'initial' }}
           >
             <PersonAvatar
+              delay={index}
               person={person}
               onMouseEnter={() => setSelectedPerson(person)}
               onMouseLeave={() => setSelectedPerson(null)}

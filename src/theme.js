@@ -38,6 +38,7 @@ const theme = {
 
   // Transitions
   durations: {
+    stagger: 100,
     short: 200,
     medium: 400,
     long: 600,
