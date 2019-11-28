@@ -10,12 +10,12 @@ const MapPopup = ({
   children,
   lngLat,
   // Popup options: https://docs.mapbox.com/mapbox-gl-js/api/#popup
-  closeButton,
-  closeOnClick,
+  closeButton = false,
+  closeOnClick = false,
   anchor,
   offset,
   className,
-  maxWidth,
+  maxWidth = '360px',
   // Misc
   tagName = 'div',
   ...props
@@ -40,11 +40,7 @@ const useMapboxPopup = (map, element, lngLat, options) => {
   useEffect(() => {
     if (!map) return;
 
-    const popup = new mapboxgl.Popup({
-      closeButton: false,
-      closeOnClick: false,
-      ...options,
-    })
+    const popup = new mapboxgl.Popup(options)
       .setDOMContent(element)
       .setLngLat(lngLat)
       .addTo(map);

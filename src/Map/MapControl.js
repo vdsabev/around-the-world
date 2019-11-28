@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 
 import MapContext from './MapContext';
 
-const MapControl = ({ children, className, position, ...props }) => {
+const MapControl = ({ children, className, position }) => {
   const container = useMapboxControl(className, position);
   return ReactDOM.createPortal(children, container);
 };

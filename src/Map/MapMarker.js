@@ -10,7 +10,7 @@ const MapMarker = ({
   children,
   lngLat,
   // Marker options: https://docs.mapbox.com/mapbox-gl-js/api/#marker
-  anchor,
+  anchor = 'center',
   color,
   draggable,
   offset,
@@ -37,7 +37,6 @@ const useMapboxMarker = (map, element, lngLat, options) => {
     if (!map) return;
 
     const marker = new mapboxgl.Marker({
-      anchor: 'center',
       ...options,
       element,
     })
