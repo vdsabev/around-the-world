@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import App from './App';
-import ErrorBoundary from './ErrorBoundary';
+import ErrorBoundary from './Components/ErrorBoundary';
 import GlobalStyle from './GlobalStyle';
 import * as serviceWorker from './serviceWorker';
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import BaseEmoji from '../Emoji';
+import BaseEmoji from '../Components/Emoji';
 
 const infoColumns = JSON.parse(process.env.REACT_APP_INFO_COLUMNS);
 

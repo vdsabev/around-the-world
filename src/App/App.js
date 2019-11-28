@@ -1,12 +1,13 @@
-import React, { useContext, useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import styled from 'styled-components';
 
-import { usePromise } from './hooks';
-import services from './services';
-import settings from './settings';
+import { usePromise } from '../hooks';
+import services from '../services';
+import settings from '../settings';
 
-import Map, { useBounds } from './Map';
-import Person from './People';
+import Map, { useBounds } from '../Map';
+import Person from '../People';
+import MapPersonAvatar from './MapPersonAvatar';
 
 const App = () => {
   const people = usePromise(services.getPeople, []);
@@ -25,7 +26,7 @@ const App = () => {
             lngLat={person.lngLat}
             style={{ zIndex: person === selectedPerson ? 1 : 'initial' }}
           >
-            <PersonAvatar
+            <MapPersonAvatar
               delay={index}
               person={person}
               onMouseEnter={() => setSelectedPerson(person)}
@@ -56,17 +57,3 @@ const AppContainer = styled.div`
   justify-content: center;
   align-items: center;
 `;
-
-// NOTE: We need this as a separate component to access the map context
-const PersonAvatar = ({ onClick, ...props }) => {
-  const map = useContext(Map.Context);
-  return (
-    <Person.Avatar
-      onClick={(e) => {
-        onClick(e);
-        map.flyTo({ center: props.person.lngLat, zoom: 6, speed: 2 });
-      }}
-      {...props}
-    />
-  );
-};
