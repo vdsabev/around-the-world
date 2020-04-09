@@ -10,7 +10,11 @@ const MapPersonAvatar = ({ onClick, ...props }) => {
         if (onClick) {
           onClick(e);
         }
-        map.flyTo({ center: props.person.lngLat, zoom: 6, speed: 2 });
+        map.flyTo({
+          center: props.person.lngLat,
+          zoom: Math.max(map.getZoom(), 6),
+          speed: 2,
+        });
       }}
       {...props}
     />
