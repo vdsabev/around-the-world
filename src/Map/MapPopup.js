@@ -1,9 +1,9 @@
-import { useContext, useEffect } from 'react';
-import mapboxgl from 'mapbox-gl';
-import ReactDOM from 'react-dom';
+import { useContext, useEffect } from 'react'
+import mapboxgl from 'mapbox-gl'
+import ReactDOM from 'react-dom'
 
-import { useElement } from './hooks';
-import MapContext from './MapContext';
+import { useElement } from './hooks'
+import MapContext from './MapContext'
 
 const MapPopup = ({
   // Required
@@ -20,8 +20,8 @@ const MapPopup = ({
   tagName = 'div',
   ...props
 }) => {
-  const element = useElement(tagName, props);
-  const map = useContext(MapContext);
+  const element = useElement(tagName, props)
+  const map = useContext(MapContext)
   useMapboxPopup(map, element, lngLat, {
     closeButton,
     closeOnClick,
@@ -29,24 +29,24 @@ const MapPopup = ({
     offset,
     className,
     maxWidth,
-  });
+  })
 
-  return ReactDOM.createPortal(children, element);
-};
+  return ReactDOM.createPortal(children, element)
+}
 
-export default MapPopup;
+export default MapPopup
 
 const useMapboxPopup = (map, element, lngLat, options) => {
   useEffect(() => {
-    if (!map) return;
+    if (!map) return
 
     const popup = new mapboxgl.Popup(options)
       .setDOMContent(element)
       .setLngLat(lngLat)
-      .addTo(map);
+      .addTo(map)
 
     return () => {
-      popup.remove();
-    };
-  }, [map, element, lngLat]); // eslint-disable-line react-hooks/exhaustive-deps
-};
+      popup.remove()
+    }
+  }, [map, element, lngLat]) // eslint-disable-line react-hooks/exhaustive-deps
+}

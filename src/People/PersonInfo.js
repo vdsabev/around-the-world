@@ -1,9 +1,9 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from 'react'
+import styled from 'styled-components'
 
-import BaseEmoji from '../Components/Emoji';
+import BaseEmoji from '../Components/Emoji'
 
-const infoColumns = JSON.parse(process.env.REACT_APP_INFO_COLUMNS);
+const infoColumns = JSON.parse(process.env.REACT_APP_INFO_COLUMNS)
 
 const PersonInfo = ({ person }) => {
   return infoColumns
@@ -13,12 +13,12 @@ const PersonInfo = ({ person }) => {
         <Emoji label={column.label} symbol={column.symbol} />
         {person[column.field]}
       </p>
-    ));
-};
+    ))
+}
 
-export default PersonInfo;
+export default PersonInfo
 
 const Emoji = styled(BaseEmoji)`
   display: inline-block;
   margin-right: 0.4em;
-`;
+`

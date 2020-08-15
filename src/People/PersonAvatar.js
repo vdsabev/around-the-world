@@ -1,9 +1,9 @@
-import styled from 'styled-components';
+import styled from 'styled-components'
 
-import { scaleIn } from '../animations';
-import settings from '../settings';
-import theme from '../theme';
-import userUrl from './user.svg';
+import { scaleIn } from '../animations'
+import settings from '../settings'
+import theme from '../theme'
+import userUrl from './user.svg'
 
 const PersonAvatar = styled.button`
   transform: scale(0);
@@ -34,15 +34,15 @@ const PersonAvatar = styled.button`
   &:hover {
     filter: grayscale(0);
   }
-`;
+`
 
 PersonAvatar.defaultProps = {
   delay: 0,
-};
+}
 
-export default PersonAvatar;
+export default PersonAvatar
 
 const getPictureUrl = (url) =>
   url
     ? `${url.replace('/open?', '/thumbnail?')}&sz=w${settings.person.size}`
-    : userUrl;
+    : userUrl

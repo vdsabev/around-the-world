@@ -1,4 +1,4 @@
-import { keyframes } from 'styled-components';
+import { keyframes } from 'styled-components'
 
 export const scaleIn = keyframes`
   0% {
@@ -7,4 +7,4 @@ export const scaleIn = keyframes`
   100% {
     transform: scale(1);
   }
-`;
+`

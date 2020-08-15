@@ -1,5 +1,5 @@
-import React from 'react';
+import React from 'react'
 
-const MapContext = React.createContext(null);
+const MapContext = React.createContext(null)
 
-export default MapContext;
+export default MapContext

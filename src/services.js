@@ -1,25 +1,24 @@
-import tabletop from 'tabletop';
-import { toObjectWithLngLat, toObjectWithRenamedKeys } from './utils';
+import settings from './settings'
 
-const spreadsheetUrl = process.env.REACT_APP_GOOGLE_SPREADSHEET_URL;
-const spreadsheetColumns = JSON.parse(
-  process.env.REACT_APP_GOOGLE_SPREADSHEET_COLUMNS
-);
+/** @typedef {{ name: string, location: string, pictureUrl: string, about: string, title: string, lngLat: [number, number] }} Person */
 
 const services = {
+  /** @returns {Promise<Person[]>} */
   async getPeople() {
-    const data = await tabletop.init({
-      key: spreadsheetUrl,
-      simpleSheet: true,
-      parseNumbers: true,
-    });
-
-    const people = data
-      .map(toObjectWithRenamedKeys(spreadsheetColumns))
-      .map(toObjectWithLngLat);
-
-    return people;
+    return fetchJson(`${settings.apiBaseUrl}/people`)
   },
-};
+}
 
-export default services;
+export default services
+
+const fetchJson = (
+  /** @type {RequestInfo} */ input,
+  /** @type {RequestInit?} */ init
+) => {
+  return fetch(input, init).then((response) => {
+    if (!response.ok) {
+      throw new Error(`${response.status} ${response.statusText}`)
+    }
+    return response.json()
+  })
+}

@@ -1,25 +1,25 @@
 {
   "name": "around-the-world",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "start": "react-scripts start",
-    "build": "npm run build:favicon && npm run build:logo && react-scripts build",
-    "build:favicon": "icon-gen -i src/logo.svg -o public -r --favicon name=favicon ico=16,24,32,64 sizes=",
-    "build:logo": "icon-gen -i src/logo.svg -o public -r --favicon name=logo ico= sizes=192,512",
+    "build": "npm run build.favicon && npm run build.logo && react-scripts build",
+    "build.favicon": "icon-gen -i src/logo.svg -o public -r --favicon name=favicon ico=16,24,32,64 sizes=",
+    "build.logo": "icon-gen -i src/logo.svg -o public -r --favicon name=logo ico= sizes=192,512",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
   "dependencies": {
-    "mapbox-gl": "1.5.0",
-    "react": "^16.12.0",
-    "react-dom": "^16.12.0",
-    "react-scripts": "3.2.0",
-    "styled-components": "4.4.1",
-    "tabletop": "1.6.2"
+    "googleapis": "59.0.0",
+    "mapbox-gl": "1.12.0",
+    "react": "16.13.1",
+    "react-dom": "16.13.1",
+    "react-scripts": "3.4.3",
+    "styled-components": "5.1.1"
   },
   "devDependencies": {
-    "@types/jest": "24.0.23",
+    "@types/jest": "26.0.10",
     "icon-gen": "2.0.0"
   },
   "eslintConfig": {

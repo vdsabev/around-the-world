@@ -1,19 +1,19 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react'
 
 export const usePromise = (fn, initialState) => {
-  const [state, setState] = useState(initialState);
+  const [state, setState] = useState(initialState)
   useEffect(() => {
-    let subscribed = true;
+    let subscribed = true
     fn().then((data) => {
       if (subscribed) {
-        setState(data);
+        setState(data)
       }
-    });
+    })
 
     return () => {
-      subscribed = false;
-    };
-  }, [fn]);
+      subscribed = false
+    }
+  }, [fn])
 
-  return state;
-};
+  return state
+}

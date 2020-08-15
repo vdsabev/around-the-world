@@ -1,9 +1,9 @@
-import { useContext, useEffect } from 'react';
-import mapboxgl from 'mapbox-gl';
-import ReactDOM from 'react-dom';
+import { useContext, useEffect } from 'react'
+import mapboxgl from 'mapbox-gl'
+import ReactDOM from 'react-dom'
 
-import { useElement } from './hooks';
-import MapContext from './MapContext';
+import { useElement } from './hooks'
+import MapContext from './MapContext'
 
 const MapMarker = ({
   // Required
@@ -18,33 +18,33 @@ const MapMarker = ({
   tagName = 'div',
   ...props
 }) => {
-  const element = useElement(tagName, props);
-  const map = useContext(MapContext);
+  const element = useElement(tagName, props)
+  const map = useContext(MapContext)
   useMapboxMarker(map, element, lngLat, {
     anchor,
     color,
     draggable,
     offset,
-  });
+  })
 
-  return ReactDOM.createPortal(children, element);
-};
+  return ReactDOM.createPortal(children, element)
+}
 
-export default MapMarker;
+export default MapMarker
 
 const useMapboxMarker = (map, element, lngLat, options) => {
   useEffect(() => {
-    if (!map) return;
+    if (!map) return
 
     const marker = new mapboxgl.Marker({
       ...options,
       element,
     })
       .setLngLat(lngLat)
-      .addTo(map);
+      .addTo(map)
 
     return () => {
-      marker.remove();
-    };
-  }, [map, element, lngLat]); // eslint-disable-line react-hooks/exhaustive-deps
-};
+      marker.remove()
+    }
+  }, [map, element, lngLat]) // eslint-disable-line react-hooks/exhaustive-deps
+}

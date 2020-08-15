@@ -1,56 +1,56 @@
-import { useContext, useEffect, useMemo } from 'react';
-import ReactDOM from 'react-dom';
+import { useContext, useEffect, useMemo } from 'react'
+import ReactDOM from 'react-dom'
 
-import MapContext from './MapContext';
+import MapContext from './MapContext'
 
 const MapControl = ({ children, className, position }) => {
-  const container = useMapboxControl(className, position);
-  return ReactDOM.createPortal(children, container);
-};
+  const container = useMapboxControl(className, position)
+  return ReactDOM.createPortal(children, container)
+}
 
-export default MapControl;
+export default MapControl
 
 const useMapboxControl = (
   className,
   position,
   mapboxClassName = 'mapboxgl-ctrl'
 ) => {
-  const map = useContext(MapContext);
-  const container = useMemo(() => document.createElement('div'), []);
+  const map = useContext(MapContext)
+  const container = useMemo(() => document.createElement('div'), [])
 
   const control = useMemo(
     () => ({
       onAdd() {
         // `mapboxgl-ctrl` needed for click events:
         // https://stackoverflow.com/questions/51681771/how-to-create-my-custom-control-with-event-in-mapboxgl
-        container.classList.add(mapboxClassName);
+        container.classList.add(mapboxClassName)
         if (className) {
-          container.classList.add(className);
+          container.classList.add(className)
         }
 
-        return container;
+        return container
       },
       onRemove() {
-        container.classList.remove(mapboxClassName);
+        container.classList.remove(mapboxClassName)
         if (className) {
-          container.classList.remove(className);
+          container.classList.remove(className)
         }
       },
     }),
     [className, container, mapboxClassName]
-  );
+  )
 
   useEffect(() => {
     if (map) {
-      map.addControl(control, position);
+      map.addControl(control, position)
     }
 
     return () => {
       if (map) {
-        map.removeControl(control);
+        map.removeControl(control)
       }
-    };
-  }, [map, control, position]);
+    }
+  }, [map, control, position])
 
-  return container;
-};
+  return container
+}

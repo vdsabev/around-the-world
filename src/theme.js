@@ -47,6 +47,6 @@ const theme = {
     easeInOut: 'cubic-bezier(0.25, 0.1, 0.25, 1)',
     elastic: 'cubic-bezier(0.33, 3, 0.66, 0)',
   },
-};
+}
 
-export default theme;
+export default theme

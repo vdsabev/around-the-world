@@ -1,5 +1,5 @@
-import { createGlobalStyle } from 'styled-components';
-import theme from './theme';
+import { createGlobalStyle } from 'styled-components'
+import theme from './theme'
 
 // Source: https://github.com/cmless/seed/blob/master/src/style.css
 const GlobalStyle = createGlobalStyle`
@@ -61,6 +61,6 @@ const GlobalStyle = createGlobalStyle`
   svg {
     fill: currentColor;
   }
-`;
+`
 
-export default GlobalStyle;
+export default GlobalStyle

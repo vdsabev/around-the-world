@@ -1,21 +1,21 @@
-import React, { useMemo, useState } from 'react';
-import styled from 'styled-components';
+import React, { useMemo, useState } from 'react'
+import styled from 'styled-components'
 
-import { usePromise } from '../hooks';
-import services from '../services';
-import settings from '../settings';
+import { usePromise } from '../hooks'
+import services from '../services'
+import settings from '../settings'
 
-import Map, { useBounds } from '../Map';
-import Person from '../People';
-import MapPersonAvatar from './MapPersonAvatar';
+import Map, { useBounds } from '../Map'
+import Person from '../People'
+import MapPersonAvatar from './MapPersonAvatar'
 
 const App = () => {
-  const people = usePromise(services.getPeople, []);
+  const people = usePromise(services.getPeople, [])
   const coordinates = useMemo(() => people.map((person) => person.lngLat), [
     people,
-  ]);
-  const bounds = useBounds(coordinates);
-  const [selectedPerson, setSelectedPerson] = useState(null);
+  ])
+  const bounds = useBounds(coordinates)
+  const [selectedPerson, setSelectedPerson] = useState(null)
 
   return (
     <AppContainer>
@@ -46,14 +46,14 @@ const App = () => {
         )}
       </Map>
     </AppContainer>
-  );
-};
+  )
+}
 
-export default App;
+export default App
 
 const AppContainer = styled.div`
   height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-`;
+`
