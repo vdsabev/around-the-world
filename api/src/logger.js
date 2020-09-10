@@ -1,2 +1,1 @@
-const logger = console
-module.exports = logger
+module.exports = console

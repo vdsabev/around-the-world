@@ -1,27 +1,21 @@
-const { google } = require('googleapis')
+const google = require('./src/google')
 const http = require('./src/http')
 const {
-  GOOGLE_SHEETS_API_KEY,
   GOOGLE_SHEETS_SHEET_ID,
   GOOGLE_SHEETS_SHEET_RANGE,
   GOOGLE_SHEETS_SHEET_COLUMNS,
 } = require('./src/settings')
 
-exports.handler = http.function('GET', async (event, context) => {
-  const sheets = google.sheets({ version: 'v4', auth: GOOGLE_SHEETS_API_KEY })
-  try {
-    const result = await sheets.spreadsheets.values.get({
-      spreadsheetId: GOOGLE_SHEETS_SHEET_ID,
-      range: GOOGLE_SHEETS_SHEET_RANGE,
-    })
-    const [columns, ...rowsOfCells] = result.data.values
-    return http.json(
-      rowsOfCells
-        .map(toRowObject(columns.map(toMappedKey(GOOGLE_SHEETS_SHEET_COLUMNS))))
-        .map(toRowWithLngLat)
-    )
-  } catch (error) {
-    return http.error(error, 502)
+exports.handler = http.function(async () => {
+  const result = await google.sheets.spreadsheets.values.get({
+    spreadsheetId: GOOGLE_SHEETS_SHEET_ID,
+    range: GOOGLE_SHEETS_SHEET_RANGE,
+  })
+  const [columns, ...rowsOfCells] = result.data.values
+  return {
+    body: rowsOfCells
+      .map(toRowObject(columns.map(toMappedKey(GOOGLE_SHEETS_SHEET_COLUMNS))))
+      .map(toRowWithLngLat),
   }
 })
 
