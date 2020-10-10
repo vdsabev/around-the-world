@@ -1,5 +1,5 @@
 const settings = {
-  apiBaseUrl: process.env.REACT_APP_API_BASE_URL,
+  apiBaseUrl: '/api',
 
   mapbox: {
     accessToken: process.env.REACT_APP_MAPBOX_ACCESS_TOKEN,
