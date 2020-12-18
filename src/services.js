@@ -1,9 +1,7 @@
 import settings from './settings'
 
-/** @typedef {{ name: string, location: string, pictureUrl: string, about: string, title: string, lngLat: [number, number] }} Person */
-
 const services = {
-  /** @returns {Promise<Person[]>} */
+  /** @returns {Promise<import('./services.d').Person[]>} */
   async getPeople() {
     return fetchJson(`${settings.apiBaseUrl}/people`)
   },

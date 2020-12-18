@@ -3,8 +3,10 @@ import ReactDOM from 'react-dom'
 
 import App from './App'
 
+jest.mock('mapbox-gl')
+
 it(`should render without crashing`, () => {
-  const div = document.createElement('div')
-  ReactDOM.render(<App />, div)
-  ReactDOM.unmountComponentAtNode(div)
+  const main = document.createElement('main')
+  ReactDOM.render(<App />, main)
+  ReactDOM.unmountComponentAtNode(main)
 })
