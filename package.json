@@ -3,7 +3,7 @@
   "version": "1.1.0",
   "private": true,
   "scripts": {
-    "start": "react-scripts start",
+    "start": "netlify dev",
     "build": "npm run build.favicon && npm run build.logo && react-scripts build",
     "build.favicon": "icon-gen -i src/logo.svg -o public -r --favicon name=favicon ico=16,24,32,64 sizes=",
     "build.logo": "icon-gen -i src/logo.svg -o public -r --favicon name=logo ico= sizes=192,512",

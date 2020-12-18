@@ -11,3 +11,11 @@
   from = "/*"
   to = "/index.html"
   status = 200
+
+[dev]
+  framework = "#custom"
+  command = "react-scripts start"
+  targetPort = 8080
+  port = 3000
+  publish = "public"
+  autoLaunch = false
