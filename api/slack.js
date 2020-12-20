@@ -1,25 +1,62 @@
 const http = require('./src/http')
 
+async function acknowledgeEvent(request) {
+  console.log(request.body.event)
+  return {
+    statusCode: 204,
+  }
+}
+
+// https://api.slack.com/events/url_verification
+const UrlVerification = {
+  request: {
+    body: {
+      type: 'object',
+      properties: {
+        type: { type: 'string', enum: ['url_verification'] },
+        challenge: { type: 'string' },
+      },
+      required: ['type', 'challenge'],
+    },
+  },
+  async handler(request) {
+    return {
+      body: {
+        challenge: request.body.challenge,
+      },
+    }
+  },
+}
+
 const ReactionItem = {
-  type: 'object',
-  properties: {
-    anyOf: [
-      {
+  anyOf: [
+    {
+      type: 'object',
+      properties: {
         type: { type: 'string', enum: ['message'] },
         channel: { type: 'string' },
         ts: { type: 'string' },
       },
-      {
-        type: { type: 'string', enum: ['message'] },
+      required: ['type', 'channel', 'ts'],
+    },
+    {
+      type: 'object',
+      properties: {
+        type: { type: 'string', enum: ['file'] },
         file: { type: 'string' },
       },
-      {
-        type: { type: 'string', enum: ['message'] },
+      required: ['type', 'file'],
+    },
+    {
+      type: 'object',
+      properties: {
+        type: { type: 'string', enum: ['file_comment'] },
         file_comment: { type: 'string' },
         file: { type: 'string' },
       },
-    ],
-  },
+      required: ['type', 'file_comment', 'file'],
+    },
+  ],
 }
 
 const ReactionEvent = {
@@ -34,28 +71,7 @@ const ReactionEvent = {
   required: ['type', 'user', 'reaction', 'item', 'event_ts'],
 }
 
-const handlers = {
-  // https://api.slack.com/events/url_verification
-  url_verification: {
-    request: {
-      body: {
-        type: 'object',
-        properties: {
-          type: { type: 'string', enum: ['url_verification'] },
-          challenge: { type: 'string' },
-        },
-        required: ['type', 'challenge'],
-      },
-    },
-    async handler(request) {
-      return {
-        body: {
-          challenge: request.body.challenge,
-        },
-      }
-    },
-  },
-
+const EventHandlers = {
   // https://api.slack.com/events/team_join
   team_join: {
     request: {
@@ -68,12 +84,7 @@ const handlers = {
         required: ['type', 'user'],
       },
     },
-    async handler(request) {
-      console.log(request.body)
-      return {
-        statusCode: 204,
-      }
-    },
+    handler: acknowledgeEvent,
   },
 
   // https://api.slack.com/events/user_change
@@ -88,12 +99,7 @@ const handlers = {
         required: ['type', 'user'],
       },
     },
-    async handler(request) {
-      console.log(request.body)
-      return {
-        statusCode: 204,
-      }
-    },
+    handler: acknowledgeEvent,
   },
 
   // https://api.slack.com/events/reaction_added
@@ -107,12 +113,7 @@ const handlers = {
         },
       },
     },
-    async handler(request) {
-      console.log(request.body)
-      return {
-        statusCode: 204,
-      }
-    },
+    handler: acknowledgeEvent,
   },
 
   // https://api.slack.com/events/reaction_removed
@@ -126,11 +127,19 @@ const handlers = {
         },
       },
     },
-    async handler(request) {
-      console.log(request.body)
-      return {
-        statusCode: 204,
-      }
+    handler: acknowledgeEvent,
+  },
+}
+
+const Event = {
+  properties: {
+    token: { type: 'string' },
+    team: { type: 'string' },
+    api_app_id: { type: 'string' },
+    event: {
+      anyOf: Object.values(EventHandlers).map(
+        (handler) => handler.request.body
+      ),
     },
   },
 }
@@ -139,10 +148,25 @@ exports.handler = http.function({
   method: 'POST',
   request: {
     body: {
-      anyOf: Object.values(handlers).map((handler) => handler.request.body),
+      anyOf: [UrlVerification.request.body, Event],
     },
   },
   async handler(request) {
-    return handlers[request.body.type].handler(request)
+    try {
+      if (request.body.type === 'url_verification') {
+        return UrlVerification.handler(request)
+      }
+
+      const eventHandler = EventHandlers[(request.body.event || {}).type]
+      if (eventHandler) {
+        return eventHandler.handler(request)
+      }
+
+      return {
+        statusCode: 404,
+      }
+    } catch (error) {
+      console.error(error)
+    }
   },
 })
