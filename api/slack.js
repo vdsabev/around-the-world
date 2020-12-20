@@ -167,6 +167,9 @@ exports.handler = http.function({
       }
     } catch (error) {
       console.error(error)
+      return {
+        statusCode: 500
+      }
     }
   },
 })
