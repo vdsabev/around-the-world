@@ -1,7 +1,7 @@
 const http = require('./src/http')
 
 async function acknowledgeEvent(request) {
-  console.log(request.body.event)
+  console.log(JSON.stringify(request.body.event, null, 2))
   return {
     statusCode: 204,
   }
@@ -168,7 +168,7 @@ exports.handler = http.function({
     } catch (error) {
       console.error(error)
       return {
-        statusCode: 500
+        statusCode: 500,
       }
     }
   },
