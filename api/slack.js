@@ -1,11 +1,5 @@
 const http = require('./src/http')
-
-async function acknowledgeEvent(request) {
-  console.log(JSON.stringify(request.body.event, null, 2))
-  return {
-    statusCode: 204,
-  }
-}
+const people = require('./src/people')
 
 // https://api.slack.com/events/url_verification
 const UrlVerification = {
@@ -28,48 +22,48 @@ const UrlVerification = {
   },
 }
 
-const ReactionItem = {
-  anyOf: [
-    {
-      type: 'object',
-      properties: {
-        type: { type: 'string', enum: ['message'] },
-        channel: { type: 'string' },
-        ts: { type: 'string' },
-      },
-      required: ['type', 'channel', 'ts'],
-    },
-    {
-      type: 'object',
-      properties: {
-        type: { type: 'string', enum: ['file'] },
-        file: { type: 'string' },
-      },
-      required: ['type', 'file'],
-    },
-    {
-      type: 'object',
-      properties: {
-        type: { type: 'string', enum: ['file_comment'] },
-        file_comment: { type: 'string' },
-        file: { type: 'string' },
-      },
-      required: ['type', 'file_comment', 'file'],
-    },
-  ],
-}
+// const ReactionItem = {
+//   anyOf: [
+//     {
+//       type: 'object',
+//       properties: {
+//         type: { type: 'string', enum: ['message'] },
+//         channel: { type: 'string' },
+//         ts: { type: 'string' },
+//       },
+//       required: ['type', 'channel', 'ts'],
+//     },
+//     {
+//       type: 'object',
+//       properties: {
+//         type: { type: 'string', enum: ['file'] },
+//         file: { type: 'string' },
+//       },
+//       required: ['type', 'file'],
+//     },
+//     {
+//       type: 'object',
+//       properties: {
+//         type: { type: 'string', enum: ['file_comment'] },
+//         file_comment: { type: 'string' },
+//         file: { type: 'string' },
+//       },
+//       required: ['type', 'file_comment', 'file'],
+//     },
+//   ],
+// }
 
-const ReactionEvent = {
-  type: 'object',
-  properties: {
-    user: { type: 'string' },
-    reaction: { type: 'string' },
-    item_user: { type: 'string' },
-    item: ReactionItem,
-    event_ts: { type: 'string' },
-  },
-  required: ['type', 'user', 'reaction', 'item', 'event_ts'],
-}
+// const ReactionEvent = {
+//   type: 'object',
+//   properties: {
+//     user: { type: 'string' },
+//     reaction: { type: 'string' },
+//     item_user: { type: 'string' },
+//     item: ReactionItem,
+//     event_ts: { type: 'string' },
+//   },
+//   required: ['type', 'user', 'reaction', 'item', 'event_ts'],
+// }
 
 const EventHandlers = {
   // https://api.slack.com/events/team_join
@@ -84,7 +78,13 @@ const EventHandlers = {
         required: ['type', 'user'],
       },
     },
-    handler: acknowledgeEvent,
+    async handler(request) {
+      // TODO: Prompt newly joined user to add their info and opt in
+
+      return {
+        statusCode: 204,
+      }
+    },
   },
 
   // https://api.slack.com/events/user_change
@@ -99,36 +99,43 @@ const EventHandlers = {
         required: ['type', 'user'],
       },
     },
-    handler: acknowledgeEvent,
+    async handler(request) {
+      const { user } = request.body
+      await people.findOneAndReplace({ id: user.id }, user)
+
+      return {
+        statusCode: 204,
+      }
+    },
   },
 
   // https://api.slack.com/events/reaction_added
-  reaction_added: {
-    request: {
-      body: {
-        ...ReactionEvent,
-        properties: {
-          ...ReactionEvent.properties,
-          type: { type: 'string', enum: ['reaction_added'] },
-        },
-      },
-    },
-    handler: acknowledgeEvent,
-  },
+  // reaction_added: {
+  //   request: {
+  //     body: {
+  //       ...ReactionEvent,
+  //       properties: {
+  //         ...ReactionEvent.properties,
+  //         type: { type: 'string', enum: ['reaction_added'] },
+  //       },
+  //     },
+  //   },
+  //   handler: acknowledgeEvent,
+  // },
 
   // https://api.slack.com/events/reaction_removed
-  reaction_removed: {
-    request: {
-      body: {
-        ...ReactionEvent,
-        properties: {
-          ...ReactionEvent.properties,
-          type: { type: 'string', enum: ['reaction_removed'] },
-        },
-      },
-    },
-    handler: acknowledgeEvent,
-  },
+  // reaction_removed: {
+  //   request: {
+  //     body: {
+  //       ...ReactionEvent,
+  //       properties: {
+  //         ...ReactionEvent.properties,
+  //         type: { type: 'string', enum: ['reaction_removed'] },
+  //       },
+  //     },
+  //   },
+  //   handler: acknowledgeEvent,
+  // },
 }
 
 const Event = {
