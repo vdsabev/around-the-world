@@ -67,25 +67,25 @@ const UrlVerification = {
 
 const EventHandlers = {
   // https://api.slack.com/events/team_join
-  team_join: {
-    request: {
-      body: {
-        type: 'object',
-        properties: {
-          type: { type: 'string', enum: ['team_join'] },
-          user: { type: 'object' },
-        },
-        required: ['type', 'user'],
-      },
-    },
-    async handler(request) {
-      // TODO: Prompt newly joined user to add their info and opt in
+  // team_join: {
+  //   request: {
+  //     body: {
+  //       type: 'object',
+  //       properties: {
+  //         type: { type: 'string', enum: ['team_join'] },
+  //         user: { type: 'object' },
+  //       },
+  //       required: ['type', 'user'],
+  //     },
+  //   },
+  //   async handler(request) {
+  //     // TODO: Prompt newly joined user to add their info and opt in
 
-      return {
-        statusCode: 204,
-      }
-    },
-  },
+  //     return {
+  //       statusCode: 204,
+  //     }
+  //   },
+  // },
 
   // https://api.slack.com/events/user_change
   user_change: {

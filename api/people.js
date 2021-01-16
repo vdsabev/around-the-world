@@ -1,9 +1,8 @@
-const { PEOPLE_DATASOURCE } = require('./src/settings')
-const datasource = require(`./src/datasources/${PEOPLE_DATASOURCE}`)
 const http = require('./src/http')
+const people = require('./src/people')
 
 exports.handler = http.function(async (request) => {
-  const response = await datasource(request.query)
+  const response = await people.find(request.query)
   return {
     body: response,
   }

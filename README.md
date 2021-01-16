@@ -7,21 +7,22 @@
 </p>
 
 ## Setup
-1. Create a Google Form and export results to a spreadsheet.
-2. Publish spreadsheet to the web following the instructions here: https://github.com/jsoma/tabletop#like-how-easy
-3. Set up required environment variables by creating a `.env` file locally or configuring your hosting provider:
-    ```
-    GOOGLE_SHEETS_API_KEY=[THE SUPER SECRET KEY YOU CREATE IN THE GOOGLE API CONSOLE]
-    GOOGLE_SHEETS_SHEET_ID=[ID OF THE GOOGLE SHEET FOUND IN THE URL]
-    GOOGLE_SHEETS_SHEET_RANGE=Form Responses 1!B:C
-    GOOGLE_SHEETS_SHEET_COLUMNS={"What's your name?":"name","Job title?":"title","Where are you located?":"location","Latitude":"latitude","Longitude":"longitude","Would you like to upload a picture of yourself?":"pictureUrl","Anything you want to share with us about yourself?":"about"}
+1. Set up a MongoDB instance
+2. Set up required environment variables by creating a `.env` file locally or configuring your hosting provider:
+    ```sh
+    MONGO_DB_URL=YOUR_MONGODB_CONNECTION_URL_HERE # example: mongodb+srv://username:password@database-url.mongodb.net/around-the-world?retryWrites=true&w=majority
+    MONGO_DB_NAME=YOUR_MONGODB_DATABASE_NAME_HERE # example: around-the-world
+    MONGO_DB_COLLECTION=YOUR_MONGODB_DATABASE_COLLECTION_HERE # example: people
+
     REACT_APP_INFO_COLUMNS=[{"field":"name","label":"Name","symbol":"👋"},{"field":"title","label":"Title","symbol":"💼"},{"field":"location","label":"Location","symbol":"🏡"},{"field":"about","label":"About","symbol":"💭"}]
     REACT_APP_MAPBOX_ACCESS_TOKEN=YOUR_MAPBOX_ACCESS_TOKEN_HERE
     REACT_APP_MAPBOX_STYLE_URL=YOUR_MAPBOX_STYLE_URL_HERE
     ```
-4. `npm install netlify-cli -g`
-5. `netlify dev`
-6. Open http://localhost:8888
+3. Run `npm install netlify-cli -g`
+4. Start the server with `netlify dev`
+5. Open http://localhost:3000
+
+After deploying the server - install our Slack App to your workspace.
 
 # Create React App
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
