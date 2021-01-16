@@ -9,6 +9,8 @@ const client = new mongodb.MongoClient(MONGO_DB_URL, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
+process.on('SIGINT', () => client.close())
+process.on('SIGTERM', () => client.close())
 
 /** @typedef {import('./types').StoredPerson} StoredPerson */
 /** @typedef {import('./types').Person} Person */
@@ -22,33 +24,21 @@ async function getCollection() {
 module.exports = {
   /** @type {(filter: mongodb.FilterQuery<StoredPerson>, options?: mongodb.FindOneOptions) => Promise<Person[]>} */
   async find(filter = {}, options) {
-    try {
-      const collection = await getCollection()
-      const documents = await collection.find(filter, options).toArray()
-      return documents
-    } finally {
-      client.close()
-    }
+    const collection = await getCollection()
+    const documents = await collection.find(filter, options).toArray()
+    return documents
   },
 
   /** @type {(filter: mongodb.FilterQuery<StoredPerson>, options?: mongodb.FindOneOptions) => Promise<Person>} */
   async findOne(filter = {}, options) {
-    try {
-      const collection = await getCollection()
-      const document = await collection.findOne(filter, options).toArray()
-      return document
-    } finally {
-      client.close()
-    }
+    const collection = await getCollection()
+    const document = await collection.findOne(filter, options).toArray()
+    return document
   },
 
   /** @type {(filter: mongodb.FilterQuery<StoredPerson>, update: StoredPerson, options?: mongodb.ReplaceOneOptions) => Promise<void>} */
   async replaceOne(filter = {}, update, options) {
-    try {
-      const collection = await getCollection()
-      await collection.replaceOne(filter, update, options)
-    } finally {
-      client.close()
-    }
+    const collection = await getCollection()
+    await collection.replaceOne(filter, update, options)
   },
 }
