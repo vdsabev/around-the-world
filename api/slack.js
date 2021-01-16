@@ -1,4 +1,4 @@
-import { get } from 'lodash'
+const { get } = require('lodash')
 const geocoding = require('./src/geocoding')
 const http = require('./src/http')
 const people = require('./src/people')
