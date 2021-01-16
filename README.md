@@ -13,12 +13,11 @@
     MONGO_DB_URL=YOUR_MONGODB_CONNECTION_URL_HERE # example: mongodb+srv://username:password@database-url.mongodb.net/around-the-world?retryWrites=true&w=majority
     MONGO_DB_NAME=YOUR_MONGODB_DATABASE_NAME_HERE # example: around-the-world
     MONGO_DB_COLLECTION=YOUR_MONGODB_DATABASE_COLLECTION_HERE # example: people
+    DATA_MAPPING_PEOPLE={"name":"profile.real_name","title":"profile.title","location":"profile.fields.Xf0KF2NE7L.value"}
 
-    REACT_APP_INFO_COLUMNS=[{"field":"name","label":"Name","symbol":"👋"},{"field":"title","label":"Title","symbol":"💼"},{"field":"location","label":"Location","symbol":"🏡"},{"field":"about","label":"About","symbol":"💭"}]
+    REACT_APP_INFO_COLUMNS=[{"field":"name","label":"Name","symbol":"👋"},{"field":"title","label":"Title","symbol":"💼"},{"field":"location","label":"Location","symbol":"🏡"}]
     REACT_APP_MAPBOX_ACCESS_TOKEN=YOUR_MAPBOX_ACCESS_TOKEN_HERE
     REACT_APP_MAPBOX_STYLE_URL=YOUR_MAPBOX_STYLE_URL_HERE
-
-    SLACK_TOKEN=YOUR_SLACK_APP_TOKEN_HERE
     ```
 3. Run `npm install netlify-cli -g`
 4. Start the server with `netlify dev`

@@ -30,7 +30,7 @@ export interface SlackUser {
 
 export interface StoredPerson extends SlackUser {
   aroundTheWorld?: {
-    coordinates: [lng: number, lat: number]
+    lngLat: [lng: number, lat: number]
   }
 }
 

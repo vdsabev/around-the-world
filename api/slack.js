@@ -1,8 +1,8 @@
-import { find, get } from 'lodash'
+import { get } from 'lodash'
 const geocoding = require('./src/geocoding')
 const http = require('./src/http')
 const people = require('./src/people')
-const { INFO_COLUMNS } = require('./src/settings')
+const { DATA_MAPPING_PEOPLE } = require('./src/settings')
 
 // https://api.slack.com/events/url_verification
 const UrlVerification = {
@@ -108,14 +108,13 @@ const EventHandlers = {
       const person = await people.findOne({ id: user.id })
       if (person) {
         // Update location
-        const locationColumn = find(INFO_COLUMNS, { label: 'Location' })
-        const locationFieldPath = locationColumn.field
+        const locationFieldPath = DATA_MAPPING_PEOPLE.location
         const newLocation = get(user, locationFieldPath)
         const currentLocation = get(person, locationFieldPath)
         if (newLocation !== currentLocation) {
           user.aroundTheWorld = {
             ...user.aroundTheWorld,
-            coordinates: newLocation
+            lngLat: newLocation
               ? await geocoding.forwardGeocode(newLocation)
               : undefined,
           }
