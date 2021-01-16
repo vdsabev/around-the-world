@@ -17,6 +17,8 @@
     REACT_APP_INFO_COLUMNS=[{"field":"name","label":"Name","symbol":"👋"},{"field":"title","label":"Title","symbol":"💼"},{"field":"location","label":"Location","symbol":"🏡"},{"field":"about","label":"About","symbol":"💭"}]
     REACT_APP_MAPBOX_ACCESS_TOKEN=YOUR_MAPBOX_ACCESS_TOKEN_HERE
     REACT_APP_MAPBOX_STYLE_URL=YOUR_MAPBOX_STYLE_URL_HERE
+
+    SLACK_TOKEN=YOUR_SLACK_APP_TOKEN_HERE
     ```
 3. Run `npm install netlify-cli -g`
 4. Start the server with `netlify dev`

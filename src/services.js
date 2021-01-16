@@ -1,9 +1,9 @@
 import settings from './settings'
 
 const services = {
-  /** @returns {Promise<import('./services.d').Person[]>} */
+  /** @returns {Promise<import('./types').Person[]>} */
   async getPeople() {
-    return fetchJson(`${settings.apiBaseUrl}/people`)
+    return fetchJson(`${settings.apiBaseUrl}/getPeople`)
   },
 }
 

@@ -2,8 +2,11 @@ const http = require('./src/http')
 const people = require('./src/people')
 
 exports.handler = http.function(async (request) => {
-  const response = await people.find(request.query)
+  const data = await people.find(request.query)
+
+  // TODO: Introduce slight random variations in the output coordinates
+
   return {
-    body: response,
+    body: data,
   }
 })

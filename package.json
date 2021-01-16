@@ -11,6 +11,7 @@
     "eject": "react-scripts eject"
   },
   "dependencies": {
+    "@mapbox/mapbox-sdk": "0.11.0",
     "googleapis": "66.0.0",
     "icon-gen": "2.1.0",
     "lessttp": "0.2.4",
