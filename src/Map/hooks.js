@@ -1,5 +1,5 @@
 import { useMemo, useEffect } from 'react'
-import mapboxgl from 'mapbox-gl'
+import mapboxgl from '!mapbox-gl' // eslint-disable-line import/no-webpack-loader-syntax
 
 export const useBounds = (coordinates, minCoordinates = 2) => {
   const bounds = useMemo(() => {

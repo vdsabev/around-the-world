@@ -12,11 +12,11 @@
   },
   "dependencies": {
     "@mapbox/mapbox-sdk": "0.11.0",
-    "googleapis": "66.0.0",
+    "googleapis": "67.0.0",
     "icon-gen": "2.1.0",
     "lessttp": "0.2.4",
     "lodash": "4.17.20",
-    "mapbox-gl": "2.0.0",
+    "mapbox-gl": "2.0.1",
     "mongodb": "3.6.3",
     "react": "17.0.1",
     "react-dom": "17.0.1",
@@ -24,7 +24,7 @@
     "styled-components": "5.2.1"
   },
   "devDependencies": {
-    "@types/jest": "26.0.19"
+    "@types/jest": "26.0.20"
   },
   "browserslist": {
     "production": [

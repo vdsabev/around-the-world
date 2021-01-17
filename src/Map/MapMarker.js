@@ -1,5 +1,5 @@
 import { useContext, useEffect } from 'react'
-import mapboxgl from 'mapbox-gl'
+import mapboxgl from '!mapbox-gl' // eslint-disable-line import/no-webpack-loader-syntax
 import ReactDOM from 'react-dom'
 
 import { useElement } from './hooks'
