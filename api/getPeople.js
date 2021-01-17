@@ -10,8 +10,7 @@ exports.handler = http.function(async (request) => {
     body: data.map((person) =>
       Object.entries(DATA_MAPPING_PEOPLE).reduce(
         (result, [key, value]) => ({ ...result, [key]: get(person, value) }),
-        { lngLat: person.aroundTheWorld && person.aroundTheWorld.lngLat }
-        // TODO: Introduce slight random variations in the output values of `lngLat`
+        { lngLat: (person.aroundTheWorld || {}).lngLat }
       )
     ),
   }

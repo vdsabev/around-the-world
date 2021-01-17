@@ -6,7 +6,6 @@ const {
 } = require('./settings')
 
 const client = new mongodb.MongoClient(MONGO_DB_URL, {
-  useNewUrlParser: true,
   useUnifiedTopology: true,
 })
 process.on('SIGINT', () => client.close())
@@ -32,7 +31,7 @@ module.exports = {
   /** @type {(filter: mongodb.FilterQuery<StoredPerson>, options?: mongodb.FindOneOptions) => Promise<Person>} */
   async findOne(filter = {}, options) {
     const collection = await getCollection()
-    const document = await collection.findOne(filter, options).toArray()
+    const document = await collection.findOne(filter, options)
     return document
   },
 

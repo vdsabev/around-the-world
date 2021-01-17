@@ -96,14 +96,19 @@ const EventHandlers = {
       body: {
         type: 'object',
         properties: {
-          type: { type: 'string', enum: ['user_change'] },
-          user: { type: 'object' },
+          event: {
+            type: 'object',
+            properties: {
+              type: { type: 'string', enum: ['user_change'] },
+              user: { type: 'object' },
+            },
+          },
         },
         required: ['type', 'user'],
       },
     },
     async handler(request) {
-      const { user } = request.body
+      const { user } = request.body.event
 
       const person = await people.findOne({ id: user.id })
       if (person) {
@@ -111,13 +116,14 @@ const EventHandlers = {
         const locationFieldPath = DATA_MAPPING_PEOPLE.location
         const newLocation = get(user, locationFieldPath)
         const currentLocation = get(person, locationFieldPath)
-        if (newLocation !== currentLocation) {
-          user.aroundTheWorld = {
-            ...user.aroundTheWorld,
-            lngLat: newLocation
-              ? await geocoding.forwardGeocode(newLocation)
-              : undefined,
-          }
+        const isNewLocationDifferent =
+          newLocation && newLocation !== currentLocation
+
+        user.aroundTheWorld = {
+          ...person.aroundTheWorld,
+          lngLat: isNewLocationDifferent
+            ? await geocoding.forwardGeocode(newLocation)
+            : person.aroundTheWorld.lngLat,
         }
 
         await people.replaceOne({ id: user.id }, user)
@@ -181,12 +187,14 @@ exports.handler = http.function({
   async handler(request) {
     try {
       if (request.body.type === 'url_verification') {
-        return UrlVerification.handler(request)
+        const response = await UrlVerification.handler(request)
+        return response
       }
 
       const eventHandler = EventHandlers[(request.body.event || {}).type]
       if (eventHandler) {
-        return eventHandler.handler(request)
+        const response = await eventHandler.handler(request)
+        return response
       }
 
       return {
