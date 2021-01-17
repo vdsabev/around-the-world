@@ -21,7 +21,7 @@ const PersonAvatar = styled.button`
   border: 2px solid ${theme.neutral.main};
 
   background-color: ${theme.neutral.main};
-  background-image: url('${(props) => getPictureUrl(props.person.pictureUrl)}');
+  background-image: url('${(props) => props.person.pictureUrl || userUrl}');
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -41,8 +41,3 @@ PersonAvatar.defaultProps = {
 }
 
 export default PersonAvatar
-
-const getPictureUrl = (url) =>
-  url
-    ? `${url.replace('/open?', '/thumbnail?')}&sz=w${settings.person.size}`
-    : userUrl
