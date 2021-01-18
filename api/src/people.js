@@ -35,9 +35,22 @@ module.exports = {
     return document
   },
 
+  /** @type {(document: mongodb.OptionalId<StoredPerson>, options?: mongodb.CollectionInsertOneOptions) => Promise<mongodb.InsertOneWriteOpResult<mongodb.WithId<Person>>>} */
+  async insertOne(document, options) {
+    const collection = await getCollection()
+    const result = await collection.insertOne(document, options)
+    return result
+  },
+
   /** @type {(filter: mongodb.FilterQuery<StoredPerson>, update: StoredPerson, options?: mongodb.ReplaceOneOptions) => Promise<void>} */
   async replaceOne(filter = {}, update, options) {
     const collection = await getCollection()
     await collection.replaceOne(filter, update, options)
+  },
+
+  /** @type {(filter: mongodb.FilterQuery<StoredPerson>, options?: mongodb.CommonOptions) => Promise<void>} */
+  async deleteOne(filter = {}, options) {
+    const collection = await getCollection()
+    await collection.deleteOne(filter, options)
   },
 }

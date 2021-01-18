@@ -10,14 +10,15 @@
 1. Set up a MongoDB instance
 2. Set up required environment variables by creating a `.env` file locally or configuring your hosting provider:
     ```sh
-    MONGO_DB_URL=YOUR_MONGODB_CONNECTION_URL_HERE # example: mongodb+srv://username:password@database-url.mongodb.net/around-the-world?retryWrites=true&w=majority
-    MONGO_DB_NAME=YOUR_MONGODB_DATABASE_NAME_HERE # example: around-the-world
-    MONGO_DB_COLLECTION=YOUR_MONGODB_DATABASE_COLLECTION_HERE # example: people
     DATA_MAPPING_PEOPLE={"pictureUrl":"profile.image_192","name":"profile.real_name","title":"profile.title","location":"profile.fields.Xf0KF2NE7L.value"}
-
+    MONGO_DB_URL=YOUR_MONGODB_CONNECTION_URL_HERE # Example: mongodb+srv://username:password@database-url.mongodb.net/around-the-world?retryWrites=true&w=majority
+    MONGO_DB_NAME=YOUR_MONGODB_DATABASE_NAME_HERE # Example: around-the-world
+    MONGO_DB_COLLECTION=YOUR_MONGODB_DATABASE_COLLECTION_HERE # Example: people
     REACT_APP_INFO_COLUMNS=[{"field":"name","label":"Name","symbol":"👋"},{"field":"title","label":"Title","symbol":"💼"},{"field":"location","label":"Location","symbol":"🏡"}]
     REACT_APP_MAPBOX_ACCESS_TOKEN=YOUR_MAPBOX_ACCESS_TOKEN_HERE
     REACT_APP_MAPBOX_STYLE_URL=YOUR_MAPBOX_STYLE_URL_HERE
+    SLACK_BOT_TOKEN=YOUR_SLACK_BOT_TOKEN_HERE
+    SLACK_REQUEST_TOKEN=YOUR_SLACK_REQUEST_TOKEN_HERE # The token with which Slack sends you requests
     ```
 3. Run `npm install netlify-cli -g`
 4. Start the server with `netlify dev`

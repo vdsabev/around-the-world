@@ -2,19 +2,41 @@ const { get } = require('lodash')
 const geocoding = require('./src/geocoding')
 const http = require('./src/http')
 const people = require('./src/people')
-const { DATA_MAPPING_PEOPLE } = require('./src/settings')
+const { DATA_MAPPING_PEOPLE, SLACK_REQUEST_TOKEN } = require('./src/settings')
+const slack = require('./src/slack')
+
+const JoinButton = {
+  type: 'button',
+  text: {
+    type: 'plain_text',
+    text: '😊 Join the Team',
+    emoji: true,
+  },
+  style: 'primary',
+  value: 'join',
+}
+
+const LeaveButton = {
+  type: 'button',
+  text: {
+    type: 'plain_text',
+    text: '😢 Leave the Team',
+    emoji: true,
+  },
+  style: 'danger',
+  value: 'leave',
+}
 
 // https://api.slack.com/events/url_verification
 const UrlVerification = {
-  request: {
-    body: {
-      type: 'object',
-      properties: {
-        type: { type: 'string', enum: ['url_verification'] },
-        challenge: { type: 'string' },
-      },
-      required: ['type', 'challenge'],
+  body: {
+    type: 'object',
+    properties: {
+      token: { type: 'string', enum: [SLACK_REQUEST_TOKEN] },
+      type: { type: 'string', enum: ['url_verification'] },
+      challenge: { type: 'string' },
     },
+    required: ['token', 'type', 'challenge'],
   },
   async handler(request) {
     return {
@@ -25,87 +47,50 @@ const UrlVerification = {
   },
 }
 
-// const ReactionItem = {
-//   anyOf: [
-//     {
-//       type: 'object',
-//       properties: {
-//         type: { type: 'string', enum: ['message'] },
-//         channel: { type: 'string' },
-//         ts: { type: 'string' },
-//       },
-//       required: ['type', 'channel', 'ts'],
-//     },
-//     {
-//       type: 'object',
-//       properties: {
-//         type: { type: 'string', enum: ['file'] },
-//         file: { type: 'string' },
-//       },
-//       required: ['type', 'file'],
-//     },
-//     {
-//       type: 'object',
-//       properties: {
-//         type: { type: 'string', enum: ['file_comment'] },
-//         file_comment: { type: 'string' },
-//         file: { type: 'string' },
-//       },
-//       required: ['type', 'file_comment', 'file'],
-//     },
-//   ],
-// }
-
-// const ReactionEvent = {
-//   type: 'object',
-//   properties: {
-//     user: { type: 'string' },
-//     reaction: { type: 'string' },
-//     item_user: { type: 'string' },
-//     item: ReactionItem,
-//     event_ts: { type: 'string' },
-//   },
-//   required: ['type', 'user', 'reaction', 'item', 'event_ts'],
-// }
-
 const EventHandlers = {
-  // https://api.slack.com/events/team_join
-  // team_join: {
-  //   request: {
-  //     body: {
-  //       type: 'object',
-  //       properties: {
-  //         type: { type: 'string', enum: ['team_join'] },
-  //         user: { type: 'object' },
-  //       },
-  //       required: ['type', 'user'],
-  //     },
-  //   },
-  //   async handler(request) {
-  //     // TODO: Prompt newly joined user to add their info and opt in
+  // https://api.slack.com/events/app_home_opened
+  app_home_opened: {
+    event: {
+      type: 'object',
+      properties: {
+        type: { type: 'string', enum: ['app_home_opened'] },
+        user: { type: 'string' },
+        view: { type: 'object' },
+      },
+      required: ['type', 'user'],
+    },
+    async handler(request) {
+      const { view, user } = request.body.event
+      if (!view) {
+        await slack.views.publish({
+          user,
+          view: {
+            type: 'home',
+            blocks: [
+              {
+                type: 'actions',
+                elements: [JoinButton, LeaveButton],
+              },
+            ],
+          },
+        })
+      }
 
-  //     return {
-  //       statusCode: 204,
-  //     }
-  //   },
-  // },
+      return {
+        statusCode: 204,
+      }
+    },
+  },
 
   // https://api.slack.com/events/user_change
   user_change: {
-    request: {
-      body: {
-        type: 'object',
-        properties: {
-          event: {
-            type: 'object',
-            properties: {
-              type: { type: 'string', enum: ['user_change'] },
-              user: { type: 'object' },
-            },
-          },
-        },
-        required: ['type', 'user'],
+    event: {
+      type: 'object',
+      properties: {
+        type: { type: 'string', enum: ['user_change'] },
+        user: { type: 'object' },
       },
+      required: ['type', 'user'],
     },
     async handler(request) {
       const { user } = request.body.event
@@ -134,54 +119,25 @@ const EventHandlers = {
       }
     },
   },
-
-  // https://api.slack.com/events/reaction_added
-  // reaction_added: {
-  //   request: {
-  //     body: {
-  //       ...ReactionEvent,
-  //       properties: {
-  //         ...ReactionEvent.properties,
-  //         type: { type: 'string', enum: ['reaction_added'] },
-  //       },
-  //     },
-  //   },
-  //   handler: acknowledgeEvent,
-  // },
-
-  // https://api.slack.com/events/reaction_removed
-  // reaction_removed: {
-  //   request: {
-  //     body: {
-  //       ...ReactionEvent,
-  //       properties: {
-  //         ...ReactionEvent.properties,
-  //         type: { type: 'string', enum: ['reaction_removed'] },
-  //       },
-  //     },
-  //   },
-  //   handler: acknowledgeEvent,
-  // },
 }
 
 const Event = {
   properties: {
-    token: { type: 'string' },
+    token: { type: 'string', enum: [SLACK_REQUEST_TOKEN] },
     team: { type: 'string' },
     api_app_id: { type: 'string' },
     event: {
-      anyOf: Object.values(EventHandlers).map(
-        (handler) => handler.request.body
-      ),
+      anyOf: Object.values(EventHandlers).map((handler) => handler.event),
     },
   },
+  required: ['token', 'event'],
 }
 
 exports.handler = http.function({
   method: 'POST',
   request: {
     body: {
-      anyOf: [UrlVerification.request.body, Event],
+      anyOf: [UrlVerification.body, Event],
     },
   },
   async handler(request) {
