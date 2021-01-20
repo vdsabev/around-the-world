@@ -7,24 +7,30 @@
 </p>
 
 ## Setup
-1. Set up a MongoDB instance
-2. Set up required environment variables by creating a `.env` file locally or configuring your hosting provider:
+1. Use an existing Mapbox account pr set up a new one: https://www.mapbox.com
+2. Use an existing MongoDB instance or set up a new one: https://cloud.mongodb.com
+3. Create a Slack App for your workspace: https://api.slack.com/apps
+4. Create custom fields for your Slack workspace called `Location` and `About me`: https://slack.com/intl/en-bg/help/articles/212281478-Customize-member-profiles
+5. Set up required environment variables by either creating a `.env` file locally or configuring your hosting provider (e.g. Netlify):
     ```sh
-    DATA_MAPPING_PEOPLE={"pictureUrl":"profile.image_192","name":"profile.real_name","title":"profile.title","location":"profile.fields.Xf0KF2NE7L.value"}
+    DATA_MAPPING_PEOPLE={"pictureUrl":"profile.image_192","name":"profile.real_name","title":"profile.title","location":"profile.fields.Xf0KF2NE7L.value","about":"profile.fields.Xf0KD3NP2F.value"} # Configure these as needed based on your Slack workspace custom fields
+    #
     MONGO_DB_URL=YOUR_MONGODB_CONNECTION_URL_HERE # Example: mongodb+srv://username:password@database-url.mongodb.net/around-the-world?retryWrites=true&w=majority
     MONGO_DB_NAME=YOUR_MONGODB_DATABASE_NAME_HERE # Example: around-the-world
     MONGO_DB_COLLECTION=YOUR_MONGODB_DATABASE_COLLECTION_HERE # Example: people
-    REACT_APP_INFO_COLUMNS=[{"field":"name","label":"Name","symbol":"👋"},{"field":"title","label":"Title","symbol":"💼"},{"field":"location","label":"Location","symbol":"🏡"}]
+    #
+    REACT_APP_INFO_COLUMNS=[{"field":"name","label":"Name","symbol":"👋"},{"field":"title","label":"Title","symbol":"💼"},{"field":"location","label":"Location","symbol":"🏡"},{"field":"about","label":"About me","symbol":"💭"}]
     REACT_APP_MAPBOX_ACCESS_TOKEN=YOUR_MAPBOX_ACCESS_TOKEN_HERE
     REACT_APP_MAPBOX_STYLE_URL=YOUR_MAPBOX_STYLE_URL_HERE
+    #
     SLACK_BOT_TOKEN=YOUR_SLACK_BOT_TOKEN_HERE
     SLACK_REQUEST_TOKEN=YOUR_SLACK_REQUEST_TOKEN_HERE # The token with which Slack sends you requests
     ```
-3. Run `npm install netlify-cli -g`
-4. Start the server with `netlify dev`
-5. Open http://localhost:3000
 
-After deploying the server - install our Slack App to your workspace.
+## Local development
+1. If you haven't, run `npm install netlify-cli -g`
+2. Start the development server with `npm start`
+3. Open http://localhost:3000
 
 # Create React App
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
