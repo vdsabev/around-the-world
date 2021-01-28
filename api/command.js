@@ -23,6 +23,7 @@ exports.handler = http.function({
         try {
           request.body = querystring.parse(request.body)
         } catch (error) {
+          console.error(error)
           return {
             statusCode: 400,
             body: 'Invalid request body!',
