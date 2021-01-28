@@ -1,9 +1,5 @@
 const mongodb = require('mongodb')
-const {
-  MONGO_DB_NAME,
-  MONGO_DB_COLLECTION,
-  MONGO_DB_URL,
-} = require('./settings')
+const { MONGO_DB_NAME, MONGO_DB_COLLECTION, MONGO_DB_URL } = require('./settings')
 
 const client = new mongodb.MongoClient(MONGO_DB_URL, {
   useUnifiedTopology: true,
@@ -35,10 +31,10 @@ module.exports = {
     return document
   },
 
-  /** @type {(document: mongodb.OptionalId<StoredPerson>, options?: mongodb.CollectionInsertOneOptions) => Promise<mongodb.InsertOneWriteOpResult<mongodb.WithId<Person>>>} */
-  async insertOne(document, options) {
+  /** @type {(filter: FilterQuery<TSchema>, update: mongodb.UpdateQuery<StoredPerson> | Partial<StoredPerson>, options?: mongodb.UpdateOneOptions) => Promise<mongodb.UpdateWriteOpResult>} */
+  async updateOne(filter, update, options) {
     const collection = await getCollection()
-    const result = await collection.insertOne(document, options)
+    const result = await collection.updateOne(filter, update, options)
     return result
   },
 

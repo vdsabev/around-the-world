@@ -1,55 +1,63 @@
 {
+  "private": true,
   "name": "around-the-world",
   "version": "2.0.0",
-  "private": true,
+  "description": "Get to know your team - wherever they are!",
   "scripts": {
     "start": "netlify dev",
-    "build": "npm run build.favicon && npm run build.logo && react-scripts build",
-    "build.favicon": "icon-gen -i src/logo.svg -o public -r --favicon name=favicon ico=16,24,32,64 sizes=",
-    "build.logo": "icon-gen -i src/logo.svg -o public -r --favicon name=logo ico= sizes=192,512",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "build": "npm run build.favicon && npm run build.logo && vue-cli-service build",
+    "build.favicon": "icon-gen -i src/assets/logo.svg -o public -r --favicon name=favicon ico=16,24,32,64 sizes=",
+    "build.logo": "icon-gen -i src/assets/logo.svg -o public -r --favicon name=logo ico= sizes=192,512",
+    "test": "jest --watch",
+    "test.all": "jest",
+    "coverage.upload": "codecov",
+    "lint": "vue-cli-service lint --no-fix && prettier --check .",
+    "lint.fix": "vue-cli-service lint && prettier --write ."
   },
   "dependencies": {
     "@mapbox/mapbox-sdk": "0.11.0",
     "@slack/web-api": "6.0.0",
+    "axios": "0.21.1",
     "googleapis": "67.0.0",
-    "icon-gen": "2.1.0",
     "lessttp": "0.2.4",
     "lodash": "4.17.20",
     "mapbox-gl": "2.0.1",
     "mongodb": "3.6.3",
-    "react": "17.0.1",
-    "react-dom": "17.0.1",
-    "react-scripts": "4.0.1",
-    "styled-components": "5.2.1"
+    "vue": "3.0.5"
   },
   "devDependencies": {
-    "@types/jest": "26.0.20"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+    "@types/jest": "26.0.20",
+    "@vue/cli-plugin-babel": "4.5.10",
+    "@vue/cli-plugin-eslint": "4.5.10",
+    "@vue/cli-service": "4.5.10",
+    "@vue/compiler-sfc": "3.0.5",
+    "babel-eslint": "10.1.0",
+    "codecov": "3.8.1",
+    "eslint": "7.18.0",
+    "eslint-plugin-vue": "7.5.0",
+    "icon-gen": "2.1.0",
+    "jest": "26.6.3",
+    "jest-fetch-mock": "3.0.3",
+    "prettier": "2.2.1",
+    "vue-cli-plugin-tailwind": "1.5.0"
   },
   "eslintConfig": {
-    "extends": "react-app",
-    "rules": {
-      "no-unused-vars": [
-        "error",
-        {
-          "vars": "all",
-          "args": "none",
-          "ignoreRestSiblings": true
-        }
-      ]
-    }
-  }
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/vue3-essential",
+      "eslint:recommended"
+    ],
+    "parserOptions": {
+      "parser": "babel-eslint"
+    },
+    "rules": {}
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not op_mini all"
+  ]
 }

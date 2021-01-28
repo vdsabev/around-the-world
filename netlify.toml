@@ -1,6 +1,7 @@
 [build]
   functions = "api/"
   publish = "build/"
+  command = "npm run lint && npm run test.all && npm run coverage.upload && npm run build"
 
 [[redirects]]
   from = "/api/*"
@@ -14,7 +15,7 @@
 
 [dev]
   framework = "#custom"
-  command = "react-scripts start"
+  command = "vue-cli-service serve"
   targetPort = 8080
   port = 3000
   publish = "public"

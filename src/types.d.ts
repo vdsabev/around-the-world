@@ -1,1 +1,1 @@
-export * from '../api/src/types.d'
+export * from '../types'

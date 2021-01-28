@@ -1,9 +1,8 @@
+const querystring = require('querystring')
+const { default: axios } = require('axios')
 const { get } = require('lodash')
-const {
-  alias,
-  validateRequest,
-  validateHttpMethod,
-} = require('lessttp/middleware')
+const { alias, validateRequest, validateHttpMethod } = require('lessttp/middleware')
+const { JOIN_MESSAGE, LEAVE_MESSAGE } = require('./src/settings')
 
 const geocoding = require('./src/geocoding')
 const http = require('./src/http')
@@ -22,9 +21,7 @@ exports.handler = http.function({
       validateHttpMethod('POST'),
       async function parseBody(request) {
         try {
-          request.body = JSON.parse(
-            decodeURIComponent(request.body).replace(/^payload=/, '')
-          )
+          request.body = querystring.parse(request.body)
         } catch (error) {
           return {
             statusCode: 400,
@@ -37,35 +34,21 @@ exports.handler = http.function({
           type: 'object',
           properties: {
             token: { type: 'string', enum: [SLACK_REQUEST_TOKEN] },
-            type: { type: 'string', enum: ['block_actions'] },
-            user: {
-              type: 'object',
-              properties: {
-                id: { type: 'string' },
-              },
-              required: ['id'],
-            },
-            actions: {
-              type: 'array',
-              items: {
-                type: 'object',
-                properties: {
-                  value: { type: 'string', enum: ['join', 'leave'] },
-                },
-                required: ['value'],
-              },
-            },
+            user_id: { type: 'string' },
+            command: { type: 'string', enum: ['/around_the_world'] },
+            text: { type: 'string', enum: ['join', 'leave'] },
+            response_url: { type: 'string' },
           },
-          required: ['token', 'user'],
+          required: ['token', 'user_id', 'command', 'text', 'response_url'],
         },
       }),
     ]
   },
   async handler(request) {
     try {
-      const user = { id: request.body.user.id }
+      const user = { id: request.body.user_id }
 
-      if (request.body.actions[0].value === 'join') {
+      if (request.body.text === 'join') {
         const response = await slack.users.profile.get({
           token: SLACK_BOT_TOKEN,
           user: user.id,
@@ -81,10 +64,15 @@ exports.handler = http.function({
           }
         }
 
-        await people.insertOne(user)
+        await people.updateOne({ id: user.id }, { $set: user }, { upsert: true })
+
+        axios.post(request.body.response_url, { text: JOIN_MESSAGE })
       } else {
         await people.deleteOne({ id: user.id })
+
+        axios.post(request.body.response_url, { text: LEAVE_MESSAGE })
       }
+
       return {
         statusCode: 204,
       }
