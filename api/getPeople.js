@@ -10,8 +10,8 @@ exports.handler = http.function(async () => {
     body: data.map((person) =>
       Object.entries(DATA_MAPPING_PEOPLE).reduce(
         (result, [key, value]) => ({ ...result, [key]: get(person, value) }),
-        { lngLat: person.aroundTheWorld.lngLat }
-      )
+        { lngLat: person.aroundTheWorld.lngLat },
+      ),
     ),
   }
 })

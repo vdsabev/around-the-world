@@ -101,8 +101,7 @@ const EventHandlers = {
         const locationFieldPath = DATA_MAPPING_PEOPLE.location
         const newLocation = get(user, locationFieldPath)
         const currentLocation = get(person, locationFieldPath)
-        const isNewLocationDifferent =
-          newLocation && newLocation !== currentLocation
+        const isNewLocationDifferent = newLocation && newLocation !== currentLocation
 
         user.aroundTheWorld = {
           ...person.aroundTheWorld,
