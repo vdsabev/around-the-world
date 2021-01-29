@@ -95,22 +95,26 @@ const EventHandlers = {
     async handler(request) {
       const { user } = request.body.event
 
-      const person = await people.findOne({ id: user.id })
-      if (person) {
-        // Update location
-        const locationFieldPath = DATA_MAPPING_PEOPLE.location
-        const newLocation = get(user, locationFieldPath)
-        const currentLocation = get(person, locationFieldPath)
-        const isNewLocationDifferent = newLocation && newLocation !== currentLocation
+      if (user.deleted) {
+        await people.deleteOne({ id: user.id })
+      } else {
+        const person = await people.findOne({ id: user.id })
+        if (person) {
+          // Update location
+          const locationFieldPath = DATA_MAPPING_PEOPLE.location
+          const newLocation = get(user, locationFieldPath)
+          const currentLocation = get(person, locationFieldPath)
+          const isNewLocationDifferent = newLocation && newLocation !== currentLocation
 
-        user.aroundTheWorld = {
-          ...person.aroundTheWorld,
-          lngLat: isNewLocationDifferent
-            ? await geocoding.forwardGeocode(newLocation)
-            : person.aroundTheWorld.lngLat,
+          user.aroundTheWorld = {
+            ...person.aroundTheWorld,
+            lngLat: isNewLocationDifferent
+              ? await geocoding.forwardGeocode(newLocation)
+              : person.aroundTheWorld.lngLat,
+          }
+
+          await people.replaceOne({ id: user.id }, user)
         }
-
-        await people.replaceOne({ id: user.id }, user)
       }
 
       return {
