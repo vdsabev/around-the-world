@@ -13,6 +13,10 @@ const settings = {
       ],
     },
   },
+
+  person: {
+    avatarSizeInPx: 64,
+  },
 }
 
 export default settings

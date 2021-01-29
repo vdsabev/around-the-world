@@ -39,7 +39,7 @@ export default {
       () => props.bounds,
       () => {
         if (props.bounds) {
-          map.value?.fitBounds(props.bounds, { padding: 64 })
+          map.value?.fitBounds(props.bounds, { padding: settings.person.avatarSizeInPx })
         }
       },
     )

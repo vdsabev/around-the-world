@@ -32,7 +32,7 @@ VUE_APP_MAPBOX_STYLE_URL=YOUR_MAPBOX_STYLE_URL_HERE
 
 ## Accounts
 1. Create a Slack App for your workspace: https://api.slack.com/apps
-2. Create custom fields for your Slack workspace called `Location`: https://slack.com/intl/en-bg/help/articles/212281478-Customize-member-profiles
+2. Optionally, create custom fields for your Slack workspace called `Location` and `About me`: https://slack.com/intl/en-bg/help/articles/212281478-Customize-member-profiles
 3. Use an existing Mapbox account or set up a new one: https://www.mapbox.com
 4. Use an existing MongoDB instance or set up a new one: https://cloud.mongodb.com
 

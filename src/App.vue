@@ -4,6 +4,7 @@
       v-for="(person, index) in people"
       :key="person.id"
       :lng-lat="person.lngLat"
+      :options="{ offset: [person.offset, -person.offset] }"
       :style="{ zIndex: person === selectedPerson ? 1 : 'initial' }"
     >
       <Person
@@ -18,7 +19,9 @@
     <Popup
       v-if="selectedPerson"
       :lng-lat="selectedPerson.lngLat"
-      :options="{ offset: 32 }"
+      :options="{
+        offset: [selectedPerson.offset, -(0.5 * avatarSizeInPx + selectedPerson.offset)],
+      }"
     >
       <PersonInfo :person="selectedPerson" />
     </Popup>
@@ -29,12 +32,15 @@
 import { computed, ref } from 'vue'
 import mapboxgl from 'mapbox-gl'
 
-import * as api from './api'
 import Map from './components/Map.vue'
 import Marker from './components/Marker.vue'
 import Person from './components/Person.vue'
 import PersonInfo from './components/PersonInfo.vue'
 import Popup from './components/Popup.vue'
+
+import * as api from './api'
+import settings from './settings'
+import { getOffset } from './utils'
 
 export default {
   name: 'App',
@@ -46,9 +52,21 @@ export default {
     Popup,
   },
   setup() {
+    const { avatarSizeInPx } = settings.person
     const people = ref([])
     api.getPeople().then((data) => {
-      people.value = data
+      people.value = data.map((person, index) => {
+        const previousPeople = data.slice(0, index)
+        const offset =
+          0.33 *
+          avatarSizeInPx *
+          getOffset(
+            person.lngLat,
+            previousPeople.map((p) => p.lngLat),
+          )
+
+        return { ...person, offset }
+      })
     })
 
     const selectedPerson = ref(null)
@@ -56,17 +74,19 @@ export default {
       selectedPerson.value = person
     }
 
+    const coordinates = computed(() => people.value.map((person) => person.lngLat))
+
     const bounds = computed(() => {
-      const coordinates = people.value.map((person) => person.lngLat)
       const minimumNumberOfCoordinates = 2
-      if (coordinates.length < minimumNumberOfCoordinates) return null
+      if (coordinates.value.length < minimumNumberOfCoordinates) return null
 
       const bounds = new mapboxgl.LngLatBounds()
-      coordinates.forEach((coordinate) => bounds.extend(coordinate))
+      coordinates.value.forEach((coordinate) => bounds.extend(coordinate))
       return bounds
     })
 
     return {
+      avatarSizeInPx,
       people,
       selectedPerson,
       setSelectedPerson,

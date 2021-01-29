@@ -32,7 +32,7 @@ export default {
       const zoomSpeed = 2
       map.value.flyTo({
         center: props.person.lngLat,
-        zoom: Math.max(map.value.getZoom(), minimumZoomLevel),
+        zoom: Math.max(map.value.getZoom() + 1, minimumZoomLevel),
         speed: zoomSpeed,
       })
     }
